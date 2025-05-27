@@ -47,11 +47,10 @@ function searchAddress() {
 
       if (lineaPercorso) map.removeLayer(lineaPercorso);
 
-      fetch("https://ors-proxy-consegne.onrender.com/route", {
+           fetch("https://ors-proxy-consegne.onrender.com/route", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "INSERISCI_LA_TUA_API_KEY"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           coordinates: [
@@ -60,6 +59,7 @@ function searchAddress() {
           ]
         })
       })
+
       .then(res => res.json())
       .then(routeData => {
        if (!routeData || !routeData.features || !routeData.features.length) {
