@@ -125,16 +125,20 @@ function apriMenu() {
         titolo.textContent = categoria.replace(/_/g, " ").toUpperCase();
         sezione.appendChild(titolo);
 
-        let index = 1;
-menu[categoria].forEach(item => {
+        let numeroPizzetta = 1;
+
+menu[categoria].forEach((item, index) => {
   const blocco = document.createElement("div");
   blocco.className = "menu-item-block";
 
   const nome = document.createElement("strong");
 
-  if (categoria.toLowerCase().includes("pizzette_clasicas") || categoria.toLowerCase().includes("pizzette_especiales")) {
-    nome.textContent = `${index}. ${item.nome}`;
-    index++;
+  if (
+    categoria.toLowerCase().includes("pizzette_clasicas") ||
+    categoria.toLowerCase().includes("pizzette_especiales")
+  ) {
+    nome.textContent = `${numeroPizzetta}. ${item.nome}`;
+    numeroPizzetta++;
   } else {
     nome.textContent = item.nome;
   }
