@@ -90,33 +90,6 @@ body {
   height: 32px;
   cursor: pointer;
 }
-
-#address {
-  padding: 12px 16px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  width: 60%;
-  max-width: 400px;
-  margin: 16px 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-button[onclick="searchAddress()"] {
-  padding: 12px 20px;
-  font-size: 1rem;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin: 16px 8px;
-}
-button[onclick="searchAddress()"]:hover {
-  background: #0056b3;
-}
-
 .ordine-riepilogo {
   margin-top: 30px;
   background: rgba(255,255,255,0.95);
@@ -200,4 +173,46 @@ input:-webkit-autofill {
 textarea {
   resize: none;
   overflow: hidden;
+}
+.form-clienti {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.form-clienti input[type="text"],
+.form-clienti textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  display: block;
+}
+
+.form-clienti textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.form-clienti button#searchBtn {
+  padding: 12px;
+  font-size: 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.form-clienti button#searchBtn:hover {
+  background: #0056b3;
 }
