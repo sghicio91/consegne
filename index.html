@@ -65,17 +65,6 @@
       </div>
     </div>
   </div> <!-- ✅ CHIUSURA CORRETTA di .container -->
-
   <script src="app.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const modifica = localStorage.getItem("ordineDaModificare");
-      if (modifica) {
-        const ordine = JSON.parse(modifica);
-        caricaOrdineEsistente(ordine);
-        localStorage.removeItem("ordineDaModificare");
-      }
-    });
-  </script>
 </body>
 </html>
