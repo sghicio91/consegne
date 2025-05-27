@@ -126,20 +126,53 @@ function apriMenu() {
         sezione.appendChild(titolo);
 
         menu[categoria].forEach(item => {
-          const blocco = document.createElement("div");
-          blocco.className = "menu-item-block";
+  const blocco = document.createElement("div");
+  blocco.className = "menu-item-block";
 
-          const nome = document.createElement("strong");
-          nome.textContent = item.nome;
+  const nome = document.createElement("strong");
+  nome.textContent = item.nome;
 
-          const prezzo = document.createElement("span");
-          prezzo.textContent = `${item.prezzo} €`;
+  const prezzo = document.createElement("span");
+  prezzo.textContent = `${item.prezzo} €`;
 
-          blocco.appendChild(nome);
-          blocco.appendChild(prezzo);
+  const quantitaWrapper = document.createElement("div");
+  quantitaWrapper.className = "quantity-control";
 
-          sezione.appendChild(blocco);
-        });
+  const menoBtn = document.createElement("button");
+  menoBtn.textContent = "−";
+
+  const inputQuantita = document.createElement("input");
+  inputQuantita.type = "number";
+  inputQuantita.value = 0;
+  inputQuantita.min = 0;
+  inputQuantita.readOnly = true;
+
+  const piuBtn = document.createElement("button");
+  piuBtn.textContent = "+";
+
+  quantitaWrapper.appendChild(menoBtn);
+  quantitaWrapper.appendChild(inputQuantita);
+  quantitaWrapper.appendChild(piuBtn);
+
+  blocco.appendChild(nome);
+  blocco.appendChild(prezzo);
+  blocco.appendChild(quantitaWrapper);
+
+  sezione.appendChild(blocco);
+
+  // Aggiunge logica dei tasti
+  piuBtn.addEventListener("click", () => {
+    inputQuantita.value = parseInt(inputQuantita.value) + 1;
+    aggiornaCarrello(item.nome, item.prezzo, parseInt(inputQuantita.value));
+  });
+
+  menoBtn.addEventListener("click", () => {
+    const nuovaQuantita = Math.max(0, parseInt(inputQuantita.value) - 1);
+    inputQuantita.value = nuovaQuantita;
+    aggiornaCarrello(item.nome, item.prezzo, nuovaQuantita);
+  });
+});
+
 
         container.appendChild(sezione);
       }
