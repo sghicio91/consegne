@@ -27,46 +27,85 @@
       <input type="text" id="nomeCliente" placeholder="Nome">
       <input type="text" id="telefonoCliente" placeholder="Telefono">
       <input type="text" id="address" placeholder="Inserisci un indirizzo">
-      <textarea id="note" placeholder="Note (piano, scala, campanello...)" rows="1"
+      <textarea id="noteCliente" placeholder="Note (piano, scala, campanello...)" rows="1"
         oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"></textarea>
       <button id="searchBtn" onclick="searchAddress()">Cerca</button>
     </div>
 
     <!-- ✅ Qui un solo risultato centrato -->
-   <div class="ordine-feedback">
-  <p id="result"></p>
-  <p id="stimaTempo"></p>
-  <button id="proseguiOrdineBtn" onclick="apriMenu()" style="display: none">
-    Procedi all'ordine
-  </button>
-</div>
-
+    <div class="ordine-feedback">
+      <p id="result"></p>
+      <p id="stimaTempo"></p>
+      <button id="proseguiOrdineBtn" onclick="apriMenu()" style="display: none">
+        Procedi all'ordine
+      </button>
+    </div>
 
     <!-- Mappa -->
     <div id="map"></div>
 
-   <!-- Menu prodotti -->
-<div id="menuContainer" style="display:none"></div>
+    <!-- Menu prodotti -->
+    <div id="menuContainer" style="display:none"></div>
 
-<!-- Riepilogo ordine SEMPRE visibile -->
-<div id="ordineRiepilogo" class="ordine-riepilogo">
-  <div id="riepilogoProdotti">
-    <h3>Prodotti selezionati:</h3>
-  </div>
+    <!-- Riepilogo ordine -->
+    <div id="ordineRiepilogo" class="ordine-riepilogo">
+      <div id="riepilogoProdotti">
+        <h3>Prodotti selezionati:</h3>
+      </div>
 
-  <div id="riepilogoTotali">
-    <p><strong>Totale articoli:</strong> <span id="totaleQuantita">0</span></p>
-    <p><strong>Totale prezzo:</strong> <span id="totalePrezzo">0.00 €</span></p>
-    <p id="costoSpedizione"></p>
-    <p id="totaleFinale"></p>
-  </div>
+      <div id="riepilogoTotali">
+        <p><strong>Totale articoli:</strong> <span id="totaleQuantita">0</span></p>
+        <p><strong>Totale prezzo:</strong> <span id="totalePrezzo">0.00 €</span></p>
+        <p id="costoSpedizione"></p>
+        <p id="totaleFinale"></p>
+      </div>
 
-  <div class="centered">
-    <button onclick="apriPaginaRiepilogo()">Conferma Ordine</button>
-  </div>
-</div>
-
+      <div class="centered">
+        <button onclick="apriPaginaRiepilogo()">Conferma Ordine</button>
+      </div>
+    </div>
   </div> <!-- ✅ CHIUSURA CORRETTA di .container -->
+
+  <!-- Script principale -->
   <script src="app.js"></script>
+
+  <!-- Script per conferma ordine -->
+  <script>
+    function apriPaginaRiepilogo() {
+      const nome = document.getElementById("nomeCliente").value.trim();
+      const telefono = document.getElementById("telefonoCliente").value.trim();
+      const indirizzo = document.getElementById("address").value.trim();
+      const note = document.getElementById("noteCliente").value.trim();
+      const prodotti = Object.entries(carrello).map(([nome, dati]) => ({
+        nome,
+        prezzo: dati.prezzo,
+        quantita: dati.quantita
+      }));
+      const spedizione = window.prezzoSpedizione || 0;
+
+      if (!nome || !telefono || !indirizzo || prodotti.length === 0) {
+        alert("Compila tutti i campi obbligatori e aggiungi almeno un prodotto.");
+        return;
+      }
+
+      const ordine = {
+        data: new Date().toISOString(),
+        nomeCliente: nome,
+        telefonoCliente: telefono,
+        indirizzoCliente: indirizzo,
+        noteCliente: note,
+        prodotti,
+        spedizione
+      };
+
+      const oggi = new Date().toISOString().slice(0, 10);
+      const chiave = "ordini_" + oggi;
+      const archivio = JSON.parse(localStorage.getItem(chiave)) || [];
+      archivio.push(ordine);
+      localStorage.setItem(chiave, JSON.stringify(archivio));
+
+      window.location.href = "ordini.html";
+    }
+  </script>
 </body>
 </html>
