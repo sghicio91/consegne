@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Riepilogo Ordine</title>
+  <style>
+    body {
+      font-family: monospace;
+      width: 58mm;
+      padding: 12px;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 auto;               /* ✅ centra la pagina */
+      display: flex;                /* ✅ per allineare al centro */
+      flex-direction: column;
+      align-items: center;          /* ✅ centra orizzontalmente */
+      justify-content: flex-start;
+      min-height: 100vh;            /* ✅ per estensione verticale */
+      background-color: #fff;       /* ✅ sfondo bianco in caso di stampa */
+    }
+
+    h2, p {
+      text-align: center;
+      margin: 6px 0;
+    }
+    .linea {
+      border-top: 1px dashed #000;
+      margin: 10px 0;
+    }
+    .prodotto {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .prodotto span:first-child {
+      flex-grow: 1;
+      word-break: break-word;
+    }
+    .prodotto span:last-child {
+      min-width: 60px;
+      text-align: right;
+    }
+    .totale {
+      font-weight: bold;
+    }
+    button {
+      display: block;
+      margin: 12px auto;
+      padding: 10px 24px;
+      font-size: 1rem;
+    }
+    @media print {
+      button { display: none; }
+      body { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h2>🧾 ORDINE</h2>
+  <p><strong>Ordine N°:</strong> <span id="numeroOrdine"></span></p>
+  <p id="dataOra" style="font-size: 14px; margin-bottom: 10px;"></p>
+  <p><strong>Cliente:</strong> <span id="nome"></span></p>
+  <p><strong>Telefono:</strong> <span id="telefono"></span></p>
+  <p><strong>Indirizzo:</strong> <span id="indirizzo"></span></p>
+  <p><strong>Note:</strong> <span id="noteCliente"></span></p>
+
+  <div class="linea"></div>
+  <div id="listaProdotti"></div>
+  <div class="linea"></div>
+  <div id="riepilogoFinale"></div>
+  <div class="linea"></div>
+  <p>Grazie!</p>
+  <button onclick="window.print()">Stampa</button>
+
+  <script>
+    const ordine = JSON.parse(localStorage.getItem("ordine"));
+    const oggi = new Date().toISOString().slice(0, 10);
+    const contatoreKey = "contatore_" + oggi;
+    let numeroOrdine = parseInt(localStorage.getItem(contatoreKey)) || 0;
+    numeroOrdine++;
+
+    document.getElementById("numeroOrdine").textContent = numeroOrdine;
+    document.getElementById("noteCliente").textContent = ordine.noteCliente || "-";
+
+    const data = new Date(ordine.timestamp);
+    document.getElementById("dataOra").textContent = data.toLocaleString("it-IT", {
+      day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"
+    });
+
+    document.getElementById("nome").textContent = ordine.nomeCliente || "N/A";
+    document.getElementById("telefono").textContent = ordine.telefonoCliente || "N/A";
+    document.getElementById("indirizzo").textContent = (ordine.indirizzoCliente || "") +
+      (ordine.pianoCliente ? " - " + ordine.pianoCliente : "");
+
+    const lista = document.getElementById("listaProdotti");
+    const riepilogo = document.getElementById("riepilogoFinale");
+    let totale = 0;
+
+    ordine.prodotti.forEach(p => {
+      const riga = document.createElement("div");
+      riga.className = "prodotto";
+      riga.textContent = `${p.quantita} x ${p.nome} - ${(p.prezzo * p.quantita).toFixed(2)} €`;
+      lista.appendChild(riga);
+      totale += p.prezzo * p.quantita;
+    });
+
+    const sped = parseFloat(ordine.spedizione || 0);
+    const totaleFinale = totale + sped;
+
+    riepilogo.innerHTML = `
+      <div class="prodotto"><span>Totale prodotti</span><span>${totale.toFixed(2)} €</span></div>
+      <div class="prodotto"><span>Spedizione</span><span>${sped.toFixed(2)} €</span></div>
+      <div class="prodotto totale"><span>TOTALE</span><span>${totaleFinale.toFixed(2)} €</span></div>
+    `;
+
+    window.onafterprint = () => {
+      localStorage.setItem(contatoreKey, numeroOrdine);
+      const archivioKey = "ordini_" + oggi;
+      const archivio = JSON.parse(localStorage.getItem(archivioKey)) || [];
+      archivio.push(ordine);
+      localStorage.setItem(archivioKey, JSON.stringify(archivio));
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+{
+  "pizzette_clasicas": [
+    {
+      "nome": "Margherita",
+      "prezzo": 2.5
+    },
+    {
+      "nome": "W\u00fcrstel",
+      "prezzo": 3
+    },
+    {
+      "nome": "Capperi & Acciughe",
+      "prezzo": 3
+    },
+    {
+      "nome": "Prosciutto cotto",
+      "prezzo": 3
+    },
+    {
+      "nome": "Mortadella",
+      "prezzo": 3
+    },
+    {
+      "nome": "Salsiccia fresca",
+      "prezzo": 3
+    },
+    {
+      "nome": "Salame",
+      "prezzo": 3
+    },
+    {
+      "nome": "Salame piccante",
+      "prezzo": 3
+    },
+    {
+      "nome": "Pancetta",
+      "prezzo": 3
+    },
+    {
+      "nome": "Tonno",
+      "prezzo": 3
+    },
+    {
+      "nome": "Olive",
+      "prezzo": 3
+    },
+    {
+      "nome": "Patate",
+      "prezzo": 3
+    },
+    {
+      "nome": "Funghi",
+      "prezzo": 3
+    },
+    {
+      "nome": "Tonno & Cipolla",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Prosciutto cotto & Funghi",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Mortadella & Pesto",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Salsiccia fresca & Peperoni",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Salame & Pecorino",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Salame piccante & Parmigiano",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "W\u00fcrstel & Patate",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Pancetta & Zucchine",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Vegetariana",
+      "prezzo": 3.5
+    }
+  ],
+  "pizzette_especiales": [
+    {
+      "nome": "Marinara",
+      "prezzo": 2.5
+    },
+    {
+      "nome": "Tropical",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Barbacoa",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "4 Formaggi",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Salsiccia, Melanzane & Parmigiano",
+      "prezzo": 4
+    },
+    {
+      "nome": "Tonno, Cipolla & Peperoni",
+      "prezzo": 4
+    },
+    {
+      "nome": "Prosciutto cotto, Funghi & Acciughe",
+      "prezzo": 4
+    },
+    {
+      "nome": "Barbacoa Especial",
+      "prezzo": 4
+    }
+  ],
+  "postres": [
+    {
+      "nome": "Tiramis\u00f9",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Cheesecake",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Yogurt Mango Maracuja",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Lemon Pie",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Cioccolato Bianco e Pistacchio",
+      "prezzo": 3.5
+    },
+    {
+      "nome": "Polvito Uruguayo",
+      "prezzo": 3.5
+    }
+  ],
+  "bebidas": [
+    {
+      "nome": "Agua 50 cl con gas",
+      "prezzo": 1.5
+    },
+    {
+      "nome": "Agua 50 cl sin gas",
+      "prezzo": 1.5
+    },
+    {
+      "nome": "Refrescos 33 cl (lattina)",
+      "prezzo": 2
+    },
+    {
+      "nome": "Refrescos Italiano 33 cl",
+      "prezzo": 2.5
+    },
+    {
+      "nome": "Cerveza Espa\u00f1ola (vetro)",
+      "prezzo": 1.5
+    },
+    {
+      "nome": "Cerveza Espa\u00f1ola (lattina 33 cl)",
+      "prezzo": 2
+    },
+    {
+      "nome": "Cerveza Italiana",
+      "prezzo": 2.5
+    }
+  ]
+}

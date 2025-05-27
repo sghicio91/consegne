@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestione Ordini</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    h1 {
+      text-align: center;
+    }
+    .ordine {
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .ordine h2 {
+      margin-top: 0;
+    }
+    .prodotti {
+      margin-top: 10px;
+    }
+    .prodotto {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .azioni {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    button {
+      padding: 6px 12px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    input[type="date"] {
+      padding: 6px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 Gestione Ordini</h1>
+  <input type="date" id="filtroData">
+  <div id="ordiniContainer"></div>
+
+  <script>
+    const filtro = document.getElementById("filtroData");
+    const container = document.getElementById("ordiniContainer");
+    filtro.value = new Date().toISOString().slice(0, 10);
+    filtro.addEventListener("change", mostraOrdini);
+    mostraOrdini();
+
+    function mostraOrdini() {
+      const data = filtro.value;
+      const archivio = JSON.parse(localStorage.getItem("ordini_" + data)) || [];
+      container.innerHTML = archivio.length === 0
+        ? '<p style="text-align:center">Nessun ordine trovato per questa data.</p>'
+        : archivio.map((ordine, index) => creaHTMLOrdine(ordine, index, data)).join("");
+    }
+
+    function creaHTMLOrdine(ordine, index, data) {
+      const prodottiHtml = ordine.prodotti.map(p => `
+        <div class="prodotto">
+          <span>${p.quantita} x ${p.nome}</span>
+          <span>${(p.prezzo * p.quantita).toFixed(2)} €</span>
+        </div>
+      `).join("");
+
+      const totale = ordine.prodotti.reduce((tot, p) => tot + p.prezzo * p.quantita, 0) + parseFloat(ordine.spedizione || 0);
+
+      return `
+        <div class="ordine">
+          <h2>Ordine N° ${index + 1}</h2>
+          <p><strong>Cliente:</strong> ${ordine.nomeCliente}</p>
+          <p><strong>Telefono:</strong> ${ordine.telefonoCliente}</p>
+          <p><strong>Indirizzo:</strong> ${ordine.indirizzoCliente}${ordine.pianoCliente ? " - " + ordine.pianoCliente : ""}</p>
+          <p><strong>Note:</strong> ${ordine.noteCliente || "-"}</p>
+          <div class="prodotti">${prodottiHtml}</div>
+          <p><strong>Totale:</strong> ${totale.toFixed(2)} €</p>
+          <div class="azioni">
+            <button onclick="ristampa('${data}', ${index})">🖶 Stampa</button>
+            <button onclick="modifica('${data}', ${index})">✏️ Modifica</button>
+            <button onclick="cancella('${data}', ${index})" style="background:#dc3545">🗑 Elimina</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function ristampa(data, index) {
+      const archivio = JSON.parse(localStorage.getItem("ordini_" + data)) || [];
+      localStorage.setItem("ordine", JSON.stringify(archivio[index]));
+      window.open("riepilogo.html", "_blank");
+    }
+
+    function cancella(data, index) {
+      if (!confirm("Sei sicuro di voler eliminare questo ordine?")) return;
+      const archivioKey = "ordini_" + data;
+      const archivio = JSON.parse(localStorage.getItem(archivioKey)) || [];
+      archivio.splice(index, 1);
+      localStorage.setItem(archivioKey, JSON.stringify(archivio));
+      mostraOrdini();
+    }
+
+    function modifica(data, index) {
+      const archivio = JSON.parse(localStorage.getItem("ordini_" + data)) || [];
+      localStorage.setItem("ordineDaModificare", JSON.stringify(archivio[index]));
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

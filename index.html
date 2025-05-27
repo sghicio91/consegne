@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Zone di Consegna</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css">
+
+  <!-- JS librerie -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Controllo Zona di Consegna</h1>
+    <button onclick="window.open('ordini.html', '_blank')">📋 Gestione Ordini</button>
+
+    <input type="text" id="address" placeholder="Inserisci un indirizzo">
+    <textarea id="note" placeholder="Note (piano, scala, campanello...)" 
+  rows="1"
+  oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"
+  style="margin-top: 10px; width: 100%; padding: 8px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; resize: none; overflow: hidden;"></textarea>
+
+    <button id="searchBtn" onclick="searchAddress()">Cerca</button>
+    <p id="result"></p>
+    <p id="stimaTempo" style="text-align: center; font-style: italic; margin-top: -10px;"></p>
+
+    <button id="proseguiOrdineBtn" onclick="chiediDatiCliente()" style="display: none">
+      Procedi all'ordine
+    </button>
+
+    <div id="map"></div>
+    <div id="menuContainer" style="display:none"></div>
+
+    <div id="ordineRiepilogo" class="ordine-riepilogo" style="display:none">
+      <div id="riepilogoProdotti">
+        <h3>Prodotti selezionati:</h3>
+      </div>
+
+      <div id="riepilogoTotali">
+        <p><strong>Totale articoli:</strong> <span id="totaleQuantita">0</span></p>
+        <p><strong>Totale prezzo:</strong> <span id="totalePrezzo">0.00 €</span></p>
+        <p id="costoSpedizione"></p>
+        <p id="totaleFinale"></p>
+      </div>
+
+      <div class="centered">
+        <button onclick="apriPaginaRiepilogo()">Conferma Ordine</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const modifica = localStorage.getItem("ordineDaModificare");
+      if (modifica) {
+        const ordine = JSON.parse(modifica);
+        caricaOrdineEsistente(ordine);
+        localStorage.removeItem("ordineDaModificare");
+      }
+    });
+  </script>
+</body>
+</html>
