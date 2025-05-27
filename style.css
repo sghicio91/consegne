@@ -141,9 +141,13 @@ body {
 .prodotto {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  width: 100%;
+  max-width: 500px;
+}
+
 }
 .prodotto .nome {
   flex-grow: 1;
