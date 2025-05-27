@@ -100,6 +100,24 @@ const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]])
     });
 }
 function chiediDatiCliente() {
-  alert("Ordine in preparazione... (funzione da completare)");
+  const form = document.getElementById("formDatiCliente");
+  form.style.display = "block";
+
+  document.getElementById("confermaDatiCliente").onclick = () => {
+    const nome = document.getElementById("nomeCliente").value.trim();
+    const telefono = document.getElementById("telefonoCliente").value.trim();
+
+    if (!nome || !telefono) {
+      alert("Compila tutti i campi.");
+      return;
+    }
+
+    window.nomeCliente = nome;
+    window.telefonoCliente = telefono;
+
+    form.style.display = "none";
+    apriMenu(); // carica il menu dei prodotti
+  };
 }
+
 
