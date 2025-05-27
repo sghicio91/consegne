@@ -1,4 +1,3 @@
-
 const map = L.map("map").setView([28.4636, -16.2518], 13);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 const drawnItems = new L.FeatureGroup();
@@ -47,7 +46,7 @@ function searchAddress() {
 
       if (lineaPercorso) map.removeLayer(lineaPercorso);
 
-           fetch("https://ors-proxy-consegne.onrender.com/route", {
+      fetch("https://ors-proxy-consegne.onrender.com/route", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -59,15 +58,14 @@ function searchAddress() {
           ]
         })
       })
-
       .then(res => res.json())
       .then(routeData => {
-       if (!routeData || !routeData.features || !routeData.features.length) {
-  resultBox.innerText += "\\n⚠️ Nessun percorso trovato.";
-  return;
-}
-const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+        if (!routeData || !routeData.features || !routeData.features.length) {
+          resultBox.innerText += "\n⚠️ Nessun percorso trovato.";
+          return;
+        }
 
+        const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
         const summary = routeData.features[0].properties.summary;
 
         lineaPercorso = L.polyline(coords, { color: 'blue' }).addTo(map);
@@ -98,7 +96,9 @@ const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]])
         }
       });
     });
-    function chiediDatiCliente() {
+}
+
+function chiediDatiCliente() {
   const esistente = document.getElementById("datiClienteOverlay");
   if (esistente) return;
 
@@ -124,11 +124,11 @@ const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]])
   box.style.minWidth = "300px";
   box.style.maxWidth = "80%";
 
-  box.innerHTML = 
+  box.innerHTML = `
     <h3>Inserisci il tuo nome</h3>
     <input id="stepNomeCliente" type="text" placeholder="Nome" style="padding:10px;width:90%;margin-bottom:10px"><br>
     <button onclick="stepTelefonoCliente()" style="padding:10px 20px;border:none;background:#007bff;color:white;border-radius:8px">Avanti</button>
-  ;
+  `;
 
   overlay.appendChild(box);
   document.body.appendChild(overlay);
@@ -141,11 +141,11 @@ function stepTelefonoCliente() {
   window.nomeCliente = nome;
 
   const box = document.querySelector("#datiClienteOverlay div");
-  box.innerHTML = 
+  box.innerHTML = `
     <h3>Inserisci il tuo telefono</h3>
     <input id="stepTelefonoCliente" type="text" placeholder="Telefono" style="padding:10px;width:90%;margin-bottom:10px"><br>
     <button onclick="confermaDatiCliente()" style="padding:10px 20px;border:none;background:#28a745;color:white;border-radius:8px">Avanti</button>
-  ;
+  `;
 }
 
 function confermaDatiCliente() {
@@ -157,5 +157,5 @@ function confermaDatiCliente() {
   const overlay = document.getElementById("datiClienteOverlay");
   if (overlay) overlay.remove();
 
-  apriMenu();
+  apriMenu(); // chiamata alla tua funzione che mostra il menu prodotti
 }
