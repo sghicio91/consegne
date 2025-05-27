@@ -127,18 +127,16 @@ function apriMenu() {
 
         let numeroPizzetta = 1;
 
-menu[categoria].forEach((item, index) => {
+let index = 1;
+
+menu[categoria].forEach(item => {
   const blocco = document.createElement("div");
   blocco.className = "menu-item-block";
 
   const nome = document.createElement("strong");
-
-  if (
-    categoria.toLowerCase().includes("pizzette_clasicas") ||
-    categoria.toLowerCase().includes("pizzette_especiales")
-  ) {
-    nome.textContent = `${numeroPizzetta}. ${item.nome}`;
-    numeroPizzetta++;
+  if (categoria.toLowerCase().includes("pizzette_clasicas") || categoria.toLowerCase().includes("pizzette_especiales")) {
+    nome.textContent = `${index}. ${item.nome}`;
+    index++;
   } else {
     nome.textContent = item.nome;
   }
@@ -182,23 +180,6 @@ menu[categoria].forEach((item, index) => {
     aggiornaCarrello(item.nome, item.prezzo, nuovaQuantita);
   });
 });
-
-
-  menoBtn.addEventListener("click", () => {
-    const nuovaQuantita = Math.max(0, parseInt(inputQuantita.value) - 1);
-    inputQuantita.value = nuovaQuantita;
-    aggiornaCarrello(item.nome, item.prezzo, nuovaQuantita);
-  });
-});
-  
-        container.appendChild(sezione);
-      }
-    })
-    .catch(err => {
-  container.innerHTML = "<p>⚠️ Errore nel caricamento del menu.</p>";
-  console.error("Errore caricamento menu:", err);
-});
-const carrello = {};
 
 function aggiornaCarrello(nome, prezzo, quantita) {
   if (quantita > 0) {
