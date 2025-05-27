@@ -172,3 +172,31 @@ button[onclick="searchAddress()"]:hover {
   min-width: 70px;
   text-align: right;
 }
+/* Campi input e textarea uniformati */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  display: block;
+  appearance: none;
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+}
+
+/* Rimuove lo stile giallo di autocomplete di Chrome */
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset;
+  -webkit-text-fill-color: #000;
+}
+
+/* Disattiva resize e overflow su textarea */
+textarea {
+  resize: none;
+  overflow: hidden;
+}
