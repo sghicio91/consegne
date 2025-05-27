@@ -125,61 +125,70 @@ function apriMenu() {
         titolo.textContent = categoria.replace(/_/g, " ").toUpperCase();
         sezione.appendChild(titolo);
 
-        let numeroPizzetta = 1;
+        let index = 1;
 
-let index = 1;
+        menu[categoria].forEach(item => {
+          const blocco = document.createElement("div");
+          blocco.className = "menu-item-block";
 
-menu[categoria].forEach(item => {
-  const blocco = document.createElement("div");
-  blocco.className = "menu-item-block";
+          const nome = document.createElement("strong");
+          if (categoria.toLowerCase().includes("pizzette_clasicas") || categoria.toLowerCase().includes("pizzette_especiales")) {
+            nome.textContent = `${index}. ${item.nome}`;
+            index++;
+          } else {
+            nome.textContent = item.nome;
+          }
 
-  const nome = document.createElement("strong");
-  if (categoria.toLowerCase().includes("pizzette_clasicas") || categoria.toLowerCase().includes("pizzette_especiales")) {
-    nome.textContent = `${index}. ${item.nome}`;
-    index++;
-  } else {
-    nome.textContent = item.nome;
-  }
+          const prezzo = document.createElement("span");
+          prezzo.textContent = `${item.prezzo} €`;
 
-  const prezzo = document.createElement("span");
-  prezzo.textContent = `${item.prezzo} €`;
+          const quantitaWrapper = document.createElement("div");
+          quantitaWrapper.className = "quantity-control";
 
-  const quantitaWrapper = document.createElement("div");
-  quantitaWrapper.className = "quantity-control";
+          const menoBtn = document.createElement("button");
+          menoBtn.textContent = "−";
 
-  const menoBtn = document.createElement("button");
-  menoBtn.textContent = "−";
+          const inputQuantita = document.createElement("input");
+          inputQuantita.type = "number";
+          inputQuantita.value = 0;
+          inputQuantita.min = 0;
+          inputQuantita.readOnly = true;
 
-  const inputQuantita = document.createElement("input");
-  inputQuantita.type = "number";
-  inputQuantita.value = 0;
-  inputQuantita.min = 0;
-  inputQuantita.readOnly = true;
+          const piuBtn = document.createElement("button");
+          piuBtn.textContent = "+";
 
-  const piuBtn = document.createElement("button");
-  piuBtn.textContent = "+";
+          quantitaWrapper.appendChild(menoBtn);
+          quantitaWrapper.appendChild(inputQuantita);
+          quantitaWrapper.appendChild(piuBtn);
 
-  quantitaWrapper.appendChild(menoBtn);
-  quantitaWrapper.appendChild(inputQuantita);
-  quantitaWrapper.appendChild(piuBtn);
+          blocco.appendChild(nome);
+          blocco.appendChild(prezzo);
+          blocco.appendChild(quantitaWrapper);
 
-  blocco.appendChild(nome);
-  blocco.appendChild(prezzo);
-  blocco.appendChild(quantitaWrapper);
+          sezione.appendChild(blocco);
 
-  sezione.appendChild(blocco);
+          piuBtn.addEventListener("click", () => {
+            inputQuantita.value = parseInt(inputQuantita.value) + 1;
+            aggiornaCarrello(item.nome, item.prezzo, parseInt(inputQuantita.value));
+          });
 
-  piuBtn.addEventListener("click", () => {
-    inputQuantita.value = parseInt(inputQuantita.value) + 1;
-    aggiornaCarrello(item.nome, item.prezzo, parseInt(inputQuantita.value));
-  });
+          menoBtn.addEventListener("click", () => {
+            const nuovaQuantita = Math.max(0, parseInt(inputQuantita.value) - 1);
+            inputQuantita.value = nuovaQuantita;
+            aggiornaCarrello(item.nome, item.prezzo, nuovaQuantita);
+          });
+        });
 
-  menoBtn.addEventListener("click", () => {
-    const nuovaQuantita = Math.max(0, parseInt(inputQuantita.value) - 1);
-    inputQuantita.value = nuovaQuantita;
-    aggiornaCarrello(item.nome, item.prezzo, nuovaQuantita);
-  });
-});
+        container.appendChild(sezione);
+      }
+    })
+    .catch(err => {
+      container.innerHTML = "<p>⚠️ Errore nel caricamento del menu.</p>";
+      console.error("Errore caricamento menu:", err);
+    });
+}
+
+const carrello = {};
 
 function aggiornaCarrello(nome, prezzo, quantita) {
   if (quantita > 0) {
@@ -190,6 +199,7 @@ function aggiornaCarrello(nome, prezzo, quantita) {
 
   aggiornaRiepilogo();
 }
+
 function aggiornaRiepilogo() {
   const riepilogoProdotti = document.getElementById("riepilogoProdotti");
   const totaleQuantita = document.getElementById("totaleQuantita");
@@ -224,8 +234,8 @@ function aggiornaRiepilogo() {
   totaleQuantita.textContent = quantitaTotale;
   totalePrezzo.textContent = prezzoTotale.toFixed(2) + " €";
 
-  // Totale finale + spedizione
   const spedizione = window.prezzoSpedizione || 0;
   document.getElementById("costoSpedizione").textContent = `Spedizione: ${spedizione.toFixed(2)} €`;
   document.getElementById("totaleFinale").textContent = `Totale: ${(prezzoTotale + spedizione).toFixed(2)} €`;
 }
+
