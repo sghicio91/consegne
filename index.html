@@ -45,26 +45,27 @@
     <!-- Mappa -->
     <div id="map"></div>
 
-    <!-- Menu prodotti -->
-    <div id="menuContainer" style="display:none"></div>
+   <!-- Menu prodotti -->
+<div id="menuContainer" style="display:none"></div>
 
-    <!-- Riepilogo ordine -->
-    <div id="ordineRiepilogo" class="ordine-riepilogo" style="display:none">
-      <div id="riepilogoProdotti">
-        <h3>Prodotti selezionati:</h3>
-      </div>
+<!-- Riepilogo ordine SEMPRE visibile -->
+<div id="ordineRiepilogo" class="ordine-riepilogo">
+  <div id="riepilogoProdotti">
+    <h3>Prodotti selezionati:</h3>
+  </div>
 
-      <div id="riepilogoTotali">
-        <p><strong>Totale articoli:</strong> <span id="totaleQuantita">0</span></p>
-        <p><strong>Totale prezzo:</strong> <span id="totalePrezzo">0.00 €</span></p>
-        <p id="costoSpedizione"></p>
-        <p id="totaleFinale"></p>
-      </div>
+  <div id="riepilogoTotali">
+    <p><strong>Totale articoli:</strong> <span id="totaleQuantita">0</span></p>
+    <p><strong>Totale prezzo:</strong> <span id="totalePrezzo">0.00 €</span></p>
+    <p id="costoSpedizione"></p>
+    <p id="totaleFinale"></p>
+  </div>
 
-      <div class="centered">
-        <button onclick="apriPaginaRiepilogo()">Conferma Ordine</button>
-      </div>
-    </div>
+  <div class="centered">
+    <button onclick="apriPaginaRiepilogo()">Conferma Ordine</button>
+  </div>
+</div>
+
   </div> <!-- ✅ CHIUSURA CORRETTA di .container -->
   <script src="app.js"></script>
 </body>
