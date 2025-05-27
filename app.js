@@ -99,3 +99,7 @@ const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]])
       });
     });
 }
+function chiediDatiCliente() {
+  alert("Ordine in preparazione... (funzione da completare)");
+}
+
