@@ -21,20 +21,20 @@
     <h1>Controllo Zona di Consegna</h1>
     <button onclick="window.open('ordini.html', '_blank')">📋 Gestione Ordini</button>
 
-    <!-- ✅ Campi per Nome, Telefono e Indirizzo con stessa larghezza -->
- <div class="form-clienti">
-  <input type="text" id="nomeCliente" placeholder="Nome">
-  <input type="text" id="telefonoCliente" placeholder="Telefono">
-  <input type="text" id="address" placeholder="Inserisci un indirizzo">
-  <textarea id="note" placeholder="Note (piano, scala, campanello...)" rows="1"
-   oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"></textarea>
-  <button id="searchBtn" onclick="searchAddress()">Cerca</button>
-</div>
-  <p id="result"></p>
-  <p id="stimaTempo" style="text-align: center; font-style: italic; margin-top: -10px;"></p>
+    <!-- ✅ Campi per Nome, Telefono e Indirizzo -->
+    <div class="form-clienti">
+      <input type="text" id="nomeCliente" placeholder="Nome">
+      <input type="text" id="telefonoCliente" placeholder="Telefono">
+      <input type="text" id="address" placeholder="Inserisci un indirizzo">
+      <textarea id="note" placeholder="Note (piano, scala, campanello...)" rows="1"
+        oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"></textarea>
+      <button id="searchBtn" onclick="searchAddress()">Cerca</button>
+    </div>
 
+    <!-- ✅ Qui un solo risultato centrato -->
+    <p id="result" style="text-align: center; font-size: 16px; font-weight: 500; margin-top: 12px;"></p>
+    <p id="stimaTempo" style="text-align: center; font-style: italic; margin-top: -10px;"></p>
 
-</div>
     <!-- Bottone prosegui ordine -->
     <button id="proseguiOrdineBtn" onclick="apriMenu()" style="display: none">
       Procedi all'ordine
@@ -63,7 +63,7 @@
         <button onclick="apriPaginaRiepilogo()">Conferma Ordine</button>
       </div>
     </div>
-  </div>
+  </div> <!-- ✅ CHIUSURA CORRETTA di .container -->
 
   <script src="app.js"></script>
   <script>
@@ -78,5 +78,3 @@
   </script>
 </body>
 </html>
-
-
