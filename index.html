@@ -32,13 +32,14 @@
     </div>
 
     <!-- ✅ Qui un solo risultato centrato -->
-    <p id="result" style="text-align: center; font-size: 16px; font-weight: 500; margin-top: 12px;"></p>
-    <p id="stimaTempo" style="text-align: center; font-style: italic; margin-top: -10px;"></p>
+   <div class="ordine-feedback">
+  <p id="result"></p>
+  <p id="stimaTempo"></p>
+  <button id="proseguiOrdineBtn" onclick="apriMenu()" style="display: none">
+    Procedi all'ordine
+  </button>
+</div>
 
-    <!-- Bottone prosegui ordine -->
-    <button id="proseguiOrdineBtn" onclick="apriMenu()" style="display: none">
-      Procedi all'ordine
-    </button>
 
     <!-- Mappa -->
     <div id="map"></div>
