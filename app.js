@@ -193,7 +193,6 @@ menu[categoria].forEach(item => {
     .catch(err => {
       container.innerHTML = "<p>⚠️ Errore nel caricamento del menu.</p>";
       console.error("Errore caricamento menu:", err);
-    });
 }
 const carrello = {};
 
