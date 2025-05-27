@@ -108,5 +108,16 @@ function searchAddress() {
       });
     });
 }
+function apriMenu() {
+  document.getElementById("menuContainer").style.display = "block";
+  document.getElementById("ordineRiepilogo").style.display = "block";
 
-// Le funzioni overlay per i dati cliente non servono più e sono state rimosse
+  // Scorri fino al menu
+  setTimeout(() => {
+    document.getElementById("menuContainer").scrollIntoView({ behavior: "smooth" });
+  }, 100);
+
+  // Nasconde il bottone dopo il click (opzionale)
+  document.getElementById("proseguiOrdineBtn").style.display = "none";
+}
+
