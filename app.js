@@ -125,12 +125,19 @@ function apriMenu() {
         titolo.textContent = categoria.replace(/_/g, " ").toUpperCase();
         sezione.appendChild(titolo);
 
-        menu[categoria].forEach(item => {
+        let index = 1;
+menu[categoria].forEach(item => {
   const blocco = document.createElement("div");
   blocco.className = "menu-item-block";
 
   const nome = document.createElement("strong");
-  nome.textContent = item.nome;
+
+  if (categoria.toLowerCase().includes("pizzette_clasicas") || categoria.toLowerCase().includes("pizzette_especiales")) {
+    nome.textContent = `${index}. ${item.nome}`;
+    index++;
+  } else {
+    nome.textContent = item.nome;
+  }
 
   const prezzo = document.createElement("span");
   prezzo.textContent = `${item.prezzo} €`;
@@ -160,7 +167,6 @@ function apriMenu() {
 
   sezione.appendChild(blocco);
 
-  // Aggiunge logica dei tasti
   piuBtn.addEventListener("click", () => {
     inputQuantita.value = parseInt(inputQuantita.value) + 1;
     aggiornaCarrello(item.nome, item.prezzo, parseInt(inputQuantita.value));
@@ -174,6 +180,13 @@ function apriMenu() {
 });
 
 
+  menoBtn.addEventListener("click", () => {
+    const nuovaQuantita = Math.max(0, parseInt(inputQuantita.value) - 1);
+    inputQuantita.value = nuovaQuantita;
+    aggiornaCarrello(item.nome, item.prezzo, nuovaQuantita);
+  });
+});
+  
         container.appendChild(sezione);
       }
     })
