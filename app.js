@@ -21,12 +21,23 @@ fetch("zone_consegne_finale.geojson")
   });
 
 function searchAddress() {
+  const nome = document.getElementById("nomeCliente").value.trim();
+  const telefono = document.getElementById("telefonoCliente").value.trim();
   const address = document.getElementById("address").value;
   const resultBox = document.getElementById("result");
+
+  if (!nome || !telefono) {
+    alert("Inserisci nome e telefono prima di cercare un indirizzo.");
+    return;
+  }
+
   if (!address) {
     resultBox.innerText = "Inserisci un indirizzo valido.";
     return;
   }
+
+  window.nomeCliente = nome;
+  window.telefonoCliente = telefono;
 
   fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Santa Cruz de Tenerife')}`)
     .then(res => res.json())
