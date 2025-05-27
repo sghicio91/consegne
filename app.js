@@ -100,15 +100,58 @@ const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]])
     });
 }
 function chiediDatiCliente() {
-  const form = document.createElement("div");
-  form.innerHTML = `
-    <label>Nome: <input id="nomeCliente" type="text"></label><br>
-    <label>Telefono: <input id="telefonoCliente" type="text"></label><br>
-    <button onclick="mostraMenu()">Avanti</button>
+  const container = document.createElement("div");
+  container.id = "formCliente";
+  container.style.position = "fixed";
+  container.style.top = "20%";
+  container.style.left = "50%";
+  container.style.transform = "translateX(-50%)";
+  container.style.background = "white";
+  container.style.padding = "20px";
+  container.style.borderRadius = "10px";
+  container.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
+  container.style.zIndex = 9999;
+
+  container.innerHTML = `
+    <label>Nome: <input id="nomeCliente" type="text"></label><br><br>
+    <button onclick="proseguiTelefono()">Avanti</button>
   `;
-  form.style.marginTop = "10px";
-  document.getElementById("result").appendChild(form);
+
+  document.body.appendChild(container);
 }
+
+function proseguiTelefono() {
+  const nome = document.getElementById("nomeCliente").value.trim();
+  if (!nome) {
+    alert("Inserisci il nome.");
+    return;
+  }
+  window.nomeCliente = nome;
+
+  const container = document.getElementById("formCliente");
+  container.innerHTML = `
+    <label>Telefono: <input id="telefonoCliente" type="text"></label><br><br>
+    <button onclick="finalizzaDatiCliente()">Avanti</button>
+  `;
+}
+
+function finalizzaDatiCliente() {
+  const telefono = document.getElementById("telefonoCliente").value.trim();
+  if (!telefono) {
+    alert("Inserisci il telefono.");
+    return;
+  }
+  window.telefonoCliente = telefono;
+
+  const container = document.getElementById("formCliente");
+  container.remove();
+
+  document.getElementById("mappa").style.height = "300px";
+  document.getElementById("menuContainer").style.display = "block";
+
+  apriMenu();
+}
+
 
 function mostraMenu() {
   const nome = document.getElementById("nomeCliente").value.trim();
