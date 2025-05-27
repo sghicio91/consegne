@@ -21,18 +21,16 @@
     <h1>Controllo Zona di Consegna</h1>
     <button onclick="window.open('ordini.html', '_blank')">📋 Gestione Ordini</button>
 
-    <!-- ✅ Campi per Nome e Telefono -->
-    <input type="text" id="nomeCliente" placeholder="Nome" style="width:100%; padding:10px; margin-bottom:10px; font-size:16px; border-radius:8px; border:1px solid #ccc;">
-    <input type="text" id="telefonoCliente" placeholder="Telefono" style="width:100%; padding:10px; margin-bottom:10px; font-size:16px; border-radius:8px; border:1px solid #ccc;">
-
-    <!-- Campo indirizzo -->
-    <input type="text" id="address" placeholder="Inserisci un indirizzo" style="width:100%; padding:10px; margin-bottom:10px; font-size:16px; border-radius:8px; border:1px solid #ccc;">
+    <!-- ✅ Campi per Nome, Telefono e Indirizzo con stessa larghezza -->
+    <input type="text" id="nomeCliente" placeholder="Nome" style="width:100%; padding:10px; margin-bottom:10px; font-size:16px; border-radius:8px; border:1px solid #ccc; box-sizing: border-box;">
+    <input type="text" id="telefonoCliente" placeholder="Telefono" style="width:100%; padding:10px; margin-bottom:10px; font-size:16px; border-radius:8px; border:1px solid #ccc; box-sizing: border-box;">
+    <input type="text" id="address" placeholder="Inserisci un indirizzo" style="width:100%; padding:10px; margin-bottom:10px; font-size:16px; border-radius:8px; border:1px solid #ccc; box-sizing: border-box;">
 
     <!-- Note -->
     <textarea id="note" placeholder="Note (piano, scala, campanello...)" 
       rows="1"
       oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"
-      style="margin-top: 10px; width: 100%; padding: 8px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; resize: none; overflow: hidden;"></textarea>
+      style="margin-top: 10px; width: 100%; padding: 8px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; resize: none; overflow: hidden; box-sizing: border-box;"></textarea>
 
     <!-- Bottone cerca -->
     <button id="searchBtn" onclick="searchAddress()">Cerca</button>
@@ -82,4 +80,5 @@
   </script>
 </body>
 </html>
+
 
