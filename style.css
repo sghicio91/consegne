@@ -216,3 +216,16 @@ textarea {
 .form-clienti button#searchBtn:hover {
   background: #0056b3;
 }
+.ordine-feedback {
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+
+.ordine-feedback p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  white-space: pre-line;
+  margin: 8px 0;
+}
