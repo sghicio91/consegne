@@ -172,6 +172,7 @@ button[onclick="searchAddress()"]:hover {
   min-width: 70px;
   text-align: right;
 }
+
 /* Campi input e textarea uniformati */
 input[type="text"],
 textarea {
