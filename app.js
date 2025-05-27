@@ -98,77 +98,68 @@ const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]])
         }
       });
     });
-}
 function chiediDatiCliente() {
-  const container = document.createElement("div");
-  container.id = "formCliente";
-  container.style.position = "fixed";
-  container.style.top = "20%";
-  container.style.left = "50%";
-  container.style.transform = "translateX(-50%)";
-  container.style.background = "white";
-  container.style.padding = "20px";
-  container.style.borderRadius = "10px";
-  container.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
-  container.style.zIndex = 9999;
+  const esistente = document.getElementById("datiClienteOverlay");
+  if (esistente) return;
 
-  container.innerHTML = `
-    <label>Nome: <input id="nomeCliente" type="text"></label><br><br>
-    <button onclick="proseguiTelefono()">Avanti</button>
+  const overlay = document.createElement("div");
+  overlay.id = "datiClienteOverlay";
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.background = "rgba(0,0,0,0.5)";
+  overlay.style.display = "flex";
+  overlay.style.justifyContent = "center";
+  overlay.style.alignItems = "center";
+  overlay.style.zIndex = "1000";
+
+  const box = document.createElement("div");
+  box.style.background = "#fff";
+  box.style.padding = "30px";
+  box.style.borderRadius = "16px";
+  box.style.boxShadow = "0 2px 12px rgba(0,0,0,0.2)";
+  box.style.textAlign = "center";
+  box.style.minWidth = "300px";
+  box.style.maxWidth = "80%";
+
+  box.innerHTML = `
+    <h3>Inserisci il tuo nome</h3>
+    <input id="stepNomeCliente" type="text" placeholder="Nome" style="padding:10px;width:90%;margin-bottom:10px"><br>
+    <button onclick="stepTelefonoCliente()" style="padding:10px 20px;border:none;background:#007bff;color:white;border-radius:8px">Avanti</button>
   `;
 
-  document.body.appendChild(container);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
 }
 
-function proseguiTelefono() {
-  const nome = document.getElementById("nomeCliente").value.trim();
-  if (!nome) {
-    alert("Inserisci il nome.");
-    return;
-  }
+function stepTelefonoCliente() {
+  const nome = document.getElementById("stepNomeCliente").value.trim();
+  if (!nome) return alert("Inserisci il nome.");
+
   window.nomeCliente = nome;
 
-  const container = document.getElementById("formCliente");
-  container.innerHTML = `
-    <label>Telefono: <input id="telefonoCliente" type="text"></label><br><br>
-    <button onclick="finalizzaDatiCliente()">Avanti</button>
+  const box = document.querySelector("#datiClienteOverlay div");
+  box.innerHTML = `
+    <h3>Inserisci il tuo telefono</h3>
+    <input id="stepTelefonoCliente" type="text" placeholder="Telefono" style="padding:10px;width:90%;margin-bottom:10px"><br>
+    <button onclick="confermaDatiCliente()" style="padding:10px 20px;border:none;background:#28a745;color:white;border-radius:8px">Avanti</button>
   `;
 }
 
-function finalizzaDatiCliente() {
-  const telefono = document.getElementById("telefonoCliente").value.trim();
-  if (!telefono) {
-    alert("Inserisci il telefono.");
-    return;
-  }
+function confermaDatiCliente() {
+  const telefono = document.getElementById("stepTelefonoCliente").value.trim();
+  if (!telefono) return alert("Inserisci il numero di telefono.");
+
   window.telefonoCliente = telefono;
 
-  const container = document.getElementById("formCliente");
-  container.remove();
-
-  document.getElementById("mappa").style.height = "300px";
-  document.getElementById("menuContainer").style.display = "block";
+  const overlay = document.getElementById("datiClienteOverlay");
+  if (overlay) overlay.remove();
 
   apriMenu();
 }
 
-
-function mostraMenu() {
-  const nome = document.getElementById("nomeCliente").value.trim();
-  const telefono = document.getElementById("telefonoCliente").value.trim();
-  if (!nome || !telefono) {
-    alert("Inserisci nome e telefono.");
-    return;
-  }
-
-  window.nomeCliente = nome;
-  window.telefonoCliente = telefono;
-
-  document.getElementById("mappa").style.height = "300px";
-  document.getElementById("menuContainer").style.display = "block";
-
-  apriMenu(); // se hai già questa funzione, si attiverà il menu
-}
 
 
 
