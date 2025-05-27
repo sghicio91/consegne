@@ -116,6 +116,7 @@ function apriMenu() {
     .then(res => res.json())
     .then(menu => {
       container.style.display = "block";
+      let index = 1; // Conta continua per le pizzette
 
       for (const categoria in menu) {
         const sezione = document.createElement("div");
@@ -125,13 +126,12 @@ function apriMenu() {
         titolo.textContent = categoria.replace(/_/g, " ").toUpperCase();
         sezione.appendChild(titolo);
 
-        let index = 1;
-
         menu[categoria].forEach(item => {
           const blocco = document.createElement("div");
           blocco.className = "menu-item-block";
 
           const nome = document.createElement("strong");
+
           if (categoria.toLowerCase().includes("pizzette_clasicas") || categoria.toLowerCase().includes("pizzette_especiales")) {
             nome.textContent = `${index}. ${item.nome}`;
             index++;
@@ -187,6 +187,7 @@ function apriMenu() {
       console.error("Errore caricamento menu:", err);
     });
 }
+
 
 const carrello = {};
 
