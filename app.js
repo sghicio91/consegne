@@ -195,9 +195,9 @@ menu[categoria].forEach((item, index) => {
       }
     })
     .catch(err => {
-      container.innerHTML = "<p>⚠️ Errore nel caricamento del menu.</p>";
-      console.error("Errore caricamento menu:", err);
-}
+  container.innerHTML = "<p>⚠️ Errore nel caricamento del menu.</p>";
+  console.error("Errore caricamento menu:", err);
+});
 const carrello = {};
 
 function aggiornaCarrello(nome, prezzo, quantita) {
