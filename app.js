@@ -47,7 +47,7 @@ function searchAddress() {
 
       if (lineaPercorso) map.removeLayer(lineaPercorso);
 
-      fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
+      fetch("https://ors-proxy-consegne.onrender.com/route", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
