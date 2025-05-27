@@ -182,3 +182,53 @@ function apriMenu() {
       console.error("Errore caricamento menu:", err);
     });
 }
+const carrello = {};
+
+function aggiornaCarrello(nome, prezzo, quantita) {
+  if (quantita > 0) {
+    carrello[nome] = { prezzo: parseFloat(prezzo), quantita };
+  } else {
+    delete carrello[nome];
+  }
+
+  aggiornaRiepilogo();
+}
+function aggiornaRiepilogo() {
+  const riepilogoProdotti = document.getElementById("riepilogoProdotti");
+  const totaleQuantita = document.getElementById("totaleQuantita");
+  const totalePrezzo = document.getElementById("totalePrezzo");
+
+  riepilogoProdotti.innerHTML = "<h3>Prodotti selezionati:</h3>";
+
+  let quantitaTotale = 0;
+  let prezzoTotale = 0;
+
+  for (const nome in carrello) {
+    const item = carrello[nome];
+    const div = document.createElement("div");
+    div.className = "prodotto";
+
+    const nomeEl = document.createElement("div");
+    nomeEl.className = "nome";
+    nomeEl.textContent = nome;
+
+    const prezzoEl = document.createElement("div");
+    prezzoEl.className = "prezzo";
+    prezzoEl.textContent = `${(item.prezzo * item.quantita).toFixed(2)} €`;
+
+    div.appendChild(nomeEl);
+    div.appendChild(prezzoEl);
+    riepilogoProdotti.appendChild(div);
+
+    quantitaTotale += item.quantita;
+    prezzoTotale += item.prezzo * item.quantita;
+  }
+
+  totaleQuantita.textContent = quantitaTotale;
+  totalePrezzo.textContent = prezzoTotale.toFixed(2) + " €";
+
+  // Totale finale + spedizione
+  const spedizione = window.prezzoSpedizione || 0;
+  document.getElementById("costoSpedizione").textContent = `Spedizione: ${spedizione.toFixed(2)} €`;
+  document.getElementById("totaleFinale").textContent = `Totale: ${(prezzoTotale + spedizione).toFixed(2)} €`;
+}
