@@ -4,7 +4,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 const drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
 
-let puntoPartenza = [28.275885, -16.153341];
+let puntoPartenza = [28.466315, -16.259363];
 let lineaPercorso = null;
 
 fetch("zone_consegne_finale.geojson")
