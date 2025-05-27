@@ -109,15 +109,43 @@ function searchAddress() {
     });
 }
 function apriMenu() {
-  document.getElementById("menuContainer").style.display = "block";
-  document.getElementById("ordineRiepilogo").style.display = "block";
+  const container = document.getElementById("menuContainer");
+  container.innerHTML = ''; // Pulisce il contenuto precedente
 
-  // Scorri fino al menu
-  setTimeout(() => {
-    document.getElementById("menuContainer").scrollIntoView({ behavior: "smooth" });
-  }, 100);
+  fetch("menu.json")
+    .then(res => res.json())
+    .then(menu => {
+      container.style.display = "block";
 
-  // Nasconde il bottone dopo il click (opzionale)
-  document.getElementById("proseguiOrdineBtn").style.display = "none";
+      for (const categoria in menu) {
+        const sezione = document.createElement("div");
+        sezione.className = "menu-section";
+
+        const titolo = document.createElement("h2");
+        titolo.textContent = categoria.replace(/_/g, " ").toUpperCase();
+        sezione.appendChild(titolo);
+
+        menu[categoria].forEach(item => {
+          const blocco = document.createElement("div");
+          blocco.className = "menu-item-block";
+
+          const nome = document.createElement("strong");
+          nome.textContent = item.nome;
+
+          const prezzo = document.createElement("span");
+          prezzo.textContent = `${item.prezzo} €`;
+
+          blocco.appendChild(nome);
+          blocco.appendChild(prezzo);
+
+          sezione.appendChild(blocco);
+        });
+
+        container.appendChild(sezione);
+      }
+    })
+    .catch(err => {
+      container.innerHTML = "<p>⚠️ Errore nel caricamento del menu.</p>";
+      console.error("Errore caricamento menu:", err);
+    });
 }
-
