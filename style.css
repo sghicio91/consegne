@@ -243,3 +243,9 @@ textarea {
   white-space: pre-line;
   margin: 8px 0;
 }
+.menu-item-block:hover {
+  box-shadow: none;
+  background: #fff;
+  opacity: 1;
+  transform: none;
+}
