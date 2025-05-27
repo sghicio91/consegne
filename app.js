@@ -62,7 +62,12 @@ function searchAddress() {
       })
       .then(res => res.json())
       .then(routeData => {
-        const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+       if (!routeData || !routeData.features || !routeData.features.length) {
+  resultBox.innerText += "\\n⚠️ Nessun percorso trovato.";
+  return;
+}
+const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+
         const summary = routeData.features[0].properties.summary;
 
         lineaPercorso = L.polyline(coords, { color: 'blue' }).addTo(map);
