@@ -36,9 +36,10 @@
 
     <!-- Note -->
     <textarea id="note" placeholder="Note (piano, scala, campanello...)" 
-      rows="1"
-      oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"
-      style="margin-top: 10px; width: 100%; padding: 8px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; resize: none; overflow: hidden; box-sizing: border-box;"></textarea>
+  rows="1"
+  oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"
+  style="display:block; width:100%; max-width:100%; padding:12px; margin-bottom:12px; font-size:16px; line-height:1.4; border-radius:8px; border:1px solid #ccc; box-sizing:border-box; resize:none; overflow:hidden;"></textarea>
+
 </div>
     <!-- Bottone cerca -->
     <button id="searchBtn" onclick="searchAddress()">Cerca</button>
