@@ -157,5 +157,5 @@ function confermaDatiCliente() {
   const overlay = document.getElementById("datiClienteOverlay");
   if (overlay) overlay.remove();
 
-  apriMenu(); // chiamata alla tua funzione che mostra il menu prodotti
+  apriMenu();
 }
