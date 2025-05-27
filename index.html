@@ -22,11 +22,15 @@
     <button onclick="window.open('ordini.html', '_blank')">📋 Gestione Ordini</button>
 
     <!-- ✅ Campi per Nome, Telefono e Indirizzo con stessa larghezza -->
-   <input type="text" id="nomeCliente" placeholder="Nome" autocomplete="off">
-<input type="text" id="telefonoCliente" placeholder="Telefono" autocomplete="off">
-<input type="text" id="address" placeholder="Inserisci un indirizzo" autocomplete="off">
-<textarea id="note" placeholder="Note (piano, scala, campanello...)" rows="1"
-  oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"></textarea>
+  <div class="form-clienti">
+  <input type="text" id="nomeCliente" placeholder="Nome" autocomplete="off">
+  <input type="text" id="telefonoCliente" placeholder="Telefono" autocomplete="off">
+  <input type="text" id="address" placeholder="Inserisci un indirizzo" autocomplete="off">
+  <textarea id="note" placeholder="Note (piano, scala, campanello...)" rows="1"
+    oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"></textarea>
+  <button id="searchBtn" onclick="searchAddress()">Cerca</button>
+</div>
+
 
 
 </div>
