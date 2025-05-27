@@ -99,88 +99,63 @@ const coords = routeData.features[0].geometry.coordinates.map(c => [c[1], c[0]])
       });
     });
     function chiediDatiCliente() {
-  if (window.nomeCliente && window.telefonoCliente) return apriMenu();
+  const esistente = document.getElementById("datiClienteOverlay");
+  if (esistente) return;
 
-  const nome = prompt("Inserisci il nome del cliente:");
-  const telefono = prompt("Inserisci il numero di telefono:");
+  const overlay = document.createElement("div");
+  overlay.id = "datiClienteOverlay";
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.background = "rgba(0,0,0,0.5)";
+  overlay.style.display = "flex";
+  overlay.style.justifyContent = "center";
+  overlay.style.alignItems = "center";
+  overlay.style.zIndex = "1000";
 
-  if (!nome || !telefono) return alert("Nome e telefono sono obbligatori.");
+  const box = document.createElement("div");
+  box.style.background = "#fff";
+  box.style.padding = "30px";
+  box.style.borderRadius = "16px";
+  box.style.boxShadow = "0 2px 12px rgba(0,0,0,0.2)";
+  box.style.textAlign = "center";
+  box.style.minWidth = "300px";
+  box.style.maxWidth = "80%";
+
+  box.innerHTML = 
+    <h3>Inserisci il tuo nome</h3>
+    <input id="stepNomeCliente" type="text" placeholder="Nome" style="padding:10px;width:90%;margin-bottom:10px"><br>
+    <button onclick="stepTelefonoCliente()" style="padding:10px 20px;border:none;background:#007bff;color:white;border-radius:8px">Avanti</button>
+  ;
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+function stepTelefonoCliente() {
+  const nome = document.getElementById("stepNomeCliente").value.trim();
+  if (!nome) return alert("Inserisci il nome.");
 
   window.nomeCliente = nome;
-  window.telefonoCliente = telefono;
-  apriMenu();
+
+  const box = document.querySelector("#datiClienteOverlay div");
+  box.innerHTML = 
+    <h3>Inserisci il tuo telefono</h3>
+    <input id="stepTelefonoCliente" type="text" placeholder="Telefono" style="padding:10px;width:90%;margin-bottom:10px"><br>
+    <button onclick="confermaDatiCliente()" style="padding:10px 20px;border:none;background:#28a745;color:white;border-radius:8px">Avanti</button>
+  ;
 }
-  function apriMenu() {
-  const menu = JSON.parse(localStorage.getItem("menuTemp"));
-  const container = document.getElementById("menuContainer");
-  container.innerHTML = '';
 
-  for (const categoria in menu) {
-    const sezione = document.createElement("div");
-    sezione.classList.add("menu-section");
+function confermaDatiCliente() {
+  const telefono = document.getElementById("stepTelefonoCliente").value.trim();
+  if (!telefono) return alert("Inserisci il numero di telefono.");
 
-    const titolo = document.createElement("h2");
-    titolo.textContent = categoria.replaceAll("_", " ").toUpperCase();
-    sezione.appendChild(titolo);
+  window.telefonoCliente = telefono;
 
-    menu[categoria].forEach((prodotto, index) => {
-      const item = document.createElement("div");
-      item.classList.add("menu-item-block");
+  const overlay = document.getElementById("datiClienteOverlay");
+  if (overlay) overlay.remove();
 
-      const nome = document.createElement("strong");
-      if (categoria === "pizzette_clasicas") {
-      nome.textContent = `${index + 1}. ${prodotto.nome}`;
-      } else if (categoria === "pizzette_especiales") {
-      nome.textContent = `${index + 23}. ${prodotto.nome}`;
-      } else {
-      nome.textContent = prodotto.nome;
-      }
-
-
-      const prezzo = document.createElement("span");
-      prezzo.textContent = prodotto.prezzo.toFixed(2) + " €";
-
-      const quantityControl = document.createElement("div");
-      quantityControl.classList.add("quantity-control");
-
-      const minusBtn = document.createElement("button");
-      minusBtn.textContent = "-";
-
-      const quantityInput = document.createElement("input");
-      quantityInput.type = "number";
-      quantityInput.value = 0;
-      quantityInput.min = 0;
-      quantityInput.addEventListener("change", aggiornaRiepilogo);
-
-      const plusBtn = document.createElement("button");
-      plusBtn.textContent = "+";
-
-      plusBtn.addEventListener("click", () => {
-        quantityInput.value = parseInt(quantityInput.value) + 1;
-        aggiornaRiepilogo();
-      });
-
-      minusBtn.addEventListener("click", () => {
-        if (parseInt(quantityInput.value) > 0) {
-          quantityInput.value = parseInt(quantityInput.value) - 1;
-          aggiornaRiepilogo();
-        }
-      });
-
-      quantityControl.appendChild(minusBtn);
-      quantityControl.appendChild(quantityInput);
-      quantityControl.appendChild(plusBtn);
-
-      item.appendChild(nome);
-      item.appendChild(prezzo);
-      item.appendChild(quantityControl);
-
-      sezione.appendChild(item);
-    });
-
-    container.appendChild(sezione);
-  }
-
-  container.style.display = "block";
-  aggiornaRiepilogo();
+  apriMenu();
 }
