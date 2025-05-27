@@ -63,11 +63,6 @@ body {
   min-height: 60px;
 }
 
-.menu-item-block:hover {
-  transform: scale(1.01);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
 .menu-item-block strong {
   font-weight: 600;
   color: #333;
@@ -242,10 +237,4 @@ textarea {
   color: #333;
   white-space: pre-line;
   margin: 8px 0;
-}
-.menu-item-block:hover {
-  box-shadow: none;
-  background: #fff;
-  opacity: 1;
-  transform: none;
 }
