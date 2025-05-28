@@ -27,7 +27,7 @@
       <input type="text" id="nomeCliente" placeholder="Nome">
       <input type="text" id="telefonoCliente" placeholder="Telefono">
       <input type="text" id="address" placeholder="Inserisci un indirizzo">
-      <textarea id="noteCliente" placeholder="Note (piano, scala, campanello...)" rows="1"
+      <textarea id="note" placeholder="Note (piano, scala, campanello...)" rows="1"
         oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"></textarea>
       <button id="searchBtn" onclick="searchAddress()">Cerca</button>
       
@@ -80,7 +80,7 @@
   document.getElementById("nomeCliente").value = "";
   document.getElementById("telefonoCliente").value = "";
   document.getElementById("address").value = "";
-  document.getElementById("note").value = "";
+  document.getElementById("note").value = "";  // <- questo è corretto!
 }
   function azzeraTutto() {
   if (!confirm("Sei sicuro di voler azzerare tutto l'ordine?")) return;
