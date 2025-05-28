@@ -62,6 +62,8 @@
 
       <div class="centered">
         <button onclick="apriPaginaRiepilogo()">Conferma Ordine</button>
+        <button onclick="azzeraTutto()" style="background:#dc3545">🗑 Azzera tutto</button>
+
       </div>
     </div>
   </div> <!-- ✅ CHIUSURA CORRETTA di .container -->
@@ -71,6 +73,21 @@
 
   <!-- Script per conferma ordine -->
  <script>
+   function azzeraTutto() {
+  // Svuota il carrello
+  for (const nome in carrello) {
+    delete carrello[nome];
+  }
+
+  // Reset quantitativi nel menu
+  document.querySelectorAll('.quantity-control input').forEach(input => {
+    input.value = 0;
+  });
+
+  // Aggiorna riepilogo visivo
+  aggiornaRiepilogo();
+}
+
   function apriPaginaRiepilogo() {
     const nome = document.getElementById("nomeCliente").value.trim();
     const telefono = document.getElementById("telefonoCliente").value.trim();
