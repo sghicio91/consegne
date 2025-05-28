@@ -122,40 +122,39 @@
 
 
   function apriPaginaRiepilogo() {
-    const nome = document.getElementById("nomeCliente").value.trim();
-    const telefono = document.getElementById("telefonoCliente").value.trim();
-    const indirizzo = document.getElementById("address").value.trim();
-    const note = document.getElementById("noteCliente").value.trim();
-    const spedizione = window.prezzoSpedizione || 0;
+  const nome = document.getElementById("nomeCliente").value.trim();
+  const telefono = document.getElementById("telefonoCliente").value.trim();
+  const indirizzo = document.getElementById("address").value.trim();
+  const note = document.getElementById("noteCliente").value.trim();
+  const spedizione = window.prezzoSpedizione || 0;
+  const zona = window.zonaConsegna || "N/A";  // 👈 AGGIUNGI QUESTO
 
-    const prodotti = Object.entries(carrello).map(([nome, dati]) => ({
-      nome,
-      prezzo: dati.prezzo,
-      quantita: dati.quantita
-    }));
+  const prodotti = Object.entries(carrello).map(([nome, dati]) => ({
+    nome,
+    prezzo: dati.prezzo,
+    quantita: dati.quantita
+  }));
 
-    if (!nome || !telefono || !indirizzo || prodotti.length === 0) {
-      alert("Compila tutti i campi obbligatori e aggiungi almeno un prodotto.");
-      return;
-    }
-
-    const ordine = {
-      timestamp: Date.now(), // ← IMPORTANTE per la data in riepilogo.html
-      nomeCliente: nome,
-      telefonoCliente: telefono,
-      indirizzoCliente: indirizzo,
-      pianoCliente: "", // Se hai un campo per il piano lo aggiungi qui
-      noteCliente: note,
-      prodotti,
-      spedizione
-    };
-
-    // Salva l’ordine temporaneo
-    localStorage.setItem("ordine", JSON.stringify(ordine));
-
-    // Apri il riepilogo stile scontrino in nuova scheda
-    window.open("riepilogo.html", "_blank");
+  if (!nome || !telefono || !indirizzo || prodotti.length === 0) {
+    alert("Compila tutti i campi obbligatori e aggiungi almeno un prodotto.");
+    return;
   }
+
+  const ordine = {
+    timestamp: Date.now(),
+    nomeCliente: nome,
+    telefonoCliente: telefono,
+    indirizzoCliente: indirizzo,
+    pianoCliente: "",
+    noteCliente: note,
+    prodotti,
+    spedizione,
+    zona  // 👈 AGGIUNGI QUESTO
+  };
+
+  localStorage.setItem("ordine", JSON.stringify(ordine));
+  window.open("riepilogo.html", "_blank");
+}
 </script>
 
 </body>
