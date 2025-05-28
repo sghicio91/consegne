@@ -158,7 +158,7 @@ function apriPaginaRiepilogo() {
     return;
   }
 
-  // ✅ Crea l’oggetto ordine PRIMA del blocco try
+  // ✅ Crea l’oggetto ordine
   const ordine = {
     timestamp: Date.now(),
     nomeCliente: nome.slice(0, 50),
@@ -185,12 +185,27 @@ function apriPaginaRiepilogo() {
     const jsonOrdine = JSON.stringify(ordine);
     console.log("Dimensione ordine:", jsonOrdine.length);
     localStorage.setItem("ordine", jsonOrdine);
+
+    // ✅ GESTIONE STORICO ORDINI
+    let ordini = JSON.parse(localStorage.getItem("ordini")) || [];
+
+    // Filtra ordini più vecchi di 30 giorni
+    const unMeseFa = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    ordini = ordini.filter(o => o.timestamp >= unMeseFa);
+
+    // Aggiungi l'ordine attuale
+    ordini.push(ordine);
+    localStorage.setItem("ordini", JSON.stringify(ordini));
+
+    // Apri la pagina riepilogo
     window.open("riepilogo.html", "_blank");
+
   } catch (e) {
     console.error("❌ Errore salvataggio ordine:", e);
     alert("Errore nel salvataggio dell'ordine. Controlla i dati inseriti.");
   }
 }
+
 
 
 
