@@ -92,10 +92,11 @@
   });
 
   // Forza l'apertura del menu e del riepilogo
-  apriMenu();
-  setTimeout(() => aggiornaRiepilogo(), 100); // Dopo caricamento
-  localStorage.removeItem("ordineDaModificare");
-});
+   apriMenu().then(() => {
+    aggiornaRiepilogo();
+    localStorage.removeItem("ordineDaModificare");
+  });
+
 
    function azzeraCampiCliente() {
   document.getElementById("nomeCliente").value = "";
