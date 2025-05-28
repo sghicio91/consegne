@@ -240,19 +240,3 @@ function aggiornaRiepilogo() {
   document.getElementById("costoSpedizione").textContent = `Spedizione: ${spedizione.toFixed(2)} €`;
   document.getElementById("totaleFinale").textContent = `Totale: ${(prezzoTotale + spedizione).toFixed(2)} €`;
 }
-function apriPaginaRiepilogo() {
-  const datiOrdine = {
-    numeroOrdine: Math.floor(100000 + Math.random() * 900000),
-    data: new Date().toLocaleString(),
-    nome: window.nomeCliente,
-    telefono: window.telefonoCliente,
-    indirizzo: window.indirizzoCliente,
-    note: window.noteCliente,
-    carrello: carrello,
-    spedizione: window.prezzoSpedizione || 0
-  };
-
-  localStorage.setItem("ordineRiepilogo", JSON.stringify(datiOrdine));
-  window.location.href = "ordini.html";
-}
-
