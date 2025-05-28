@@ -75,20 +75,20 @@
 
   <!-- Script per conferma ordine -->
  <script>
-   function azzeraTutto() {
-  // Svuota il carrello
+  function azzeraTutto() {
+  if (!confirm("Sei sicuro di voler azzerare tutto l'ordine?")) return;
+
   for (const nome in carrello) {
     delete carrello[nome];
   }
 
-  // Reset quantitativi nel menu
   document.querySelectorAll('.quantity-control input').forEach(input => {
     input.value = 0;
   });
 
-  // Aggiorna riepilogo visivo
   aggiornaRiepilogo();
 }
+
 
   function apriPaginaRiepilogo() {
     const nome = document.getElementById("nomeCliente").value.trim();
