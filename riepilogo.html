@@ -98,12 +98,22 @@
     let totale = 0;
 
     ordine.prodotti.forEach(p => {
-      const riga = document.createElement("div");
-      riga.className = "prodotto";
-      riga.textContent = `${p.quantita} x ${p.nome} - ${(p.prezzo * p.quantita).toFixed(2)} €`;
-      lista.appendChild(riga);
-      totale += p.prezzo * p.quantita;
-    });
+  const riga = document.createElement("div");
+  riga.className = "prodotto";
+
+  const sinistra = document.createElement("span");
+  sinistra.textContent = `${p.quantita} x ${p.nome}`;
+
+  const destra = document.createElement("span");
+  destra.textContent = `${(p.prezzo * p.quantita).toFixed(2)} €`;
+
+  riga.appendChild(sinistra);
+  riga.appendChild(destra);
+
+  lista.appendChild(riga);
+  totale += p.prezzo * p.quantita;
+});
+
 
     const sped = parseFloat(ordine.spedizione || 0);
     const totaleFinale = totale + sped;
