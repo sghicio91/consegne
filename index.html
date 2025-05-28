@@ -158,7 +158,12 @@ function apriPaginaRiepilogo() {
 
   // Salva il cliente in rubrica
   const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || {};
-  rubrica[telefono] = { nome, indirizzo, note };
+  rubrica[telefono] = {
+  nome: nome.slice(0, 50),
+  indirizzo: indirizzo.slice(0, 100),
+  note: note.slice(0, 200)
+};
+
   localStorage.setItem("rubricaClienti", JSON.stringify(rubrica));
 
   const ordine = {
