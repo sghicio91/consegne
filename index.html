@@ -191,6 +191,7 @@ function apriPaginaRiepilogo() {
     zona
   };
 
+  console.log("Ordine da salvare:", ordine);
   localStorage.setItem("ordine", JSON.stringify(ordine));
   window.open("riepilogo.html", "_blank");
 }
