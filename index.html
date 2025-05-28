@@ -156,16 +156,16 @@ function apriPaginaRiepilogo() {
     return;
   }
 
-  // Salva il cliente in rubrica
+  // ✅ SALVA I DATI MINIMI DEL CLIENTE nella rubrica
   const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || {};
   rubrica[telefono] = {
-  nome: nome.slice(0, 50),
-  indirizzo: indirizzo.slice(0, 100),
-  note: note.slice(0, 200)
-};
-
+    nome: nome.slice(0, 50),
+    indirizzo: indirizzo.slice(0, 100),
+    note: note.slice(0, 200)
+  };
   localStorage.setItem("rubricaClienti", JSON.stringify(rubrica));
 
+  // ✅ Ordine completo per la pagina riepilogo
   const ordine = {
     timestamp: Date.now(),
     nomeCliente: nome,
@@ -181,6 +181,7 @@ function apriPaginaRiepilogo() {
   localStorage.setItem("ordine", JSON.stringify(ordine));
   window.open("riepilogo.html", "_blank");
 }
+
 
 </script>
 
