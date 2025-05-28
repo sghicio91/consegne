@@ -132,21 +132,16 @@ async function apriMenu() {
       const prezzo = document.createElement("span");
       prezzo.textContent = `${prodotto.prezzo.toFixed(2)} €`;
 
-      const controllo = document.createElement("div");
-      controllo.classList.add("quantity-control");
-      controllo.setAttribute("data-prodotto", prodotto.nome);
-
-      const input = document.createElement("input");
-      input.type = "number";
-      input.min = "0";
-      input.value = carrello[prodotto.nome]?.quantita || 0;
-
-      input.addEventListener("input", () => {
-        const quantita = parseInt(input.value);
-        if (quantita > 0) {
+      const quantitaInput = document.createElement("input");
+      quantitaInput.type = "number";
+      quantitaInput.min = 0;
+      quantitaInput.value = carrello[prodotto.nome]?.quantita || 0;
+      quantitaInput.addEventListener("change", () => {
+        const q = parseInt(quantitaInput.value);
+        if (q > 0) {
           carrello[prodotto.nome] = {
             prezzo: prodotto.prezzo,
-            quantita
+            quantita: q
           };
         } else {
           delete carrello[prodotto.nome];
@@ -154,11 +149,31 @@ async function apriMenu() {
         aggiornaRiepilogo();
       });
 
-      controllo.appendChild(input);
+      const meno = document.createElement("button");
+      meno.textContent = "−";
+      meno.onclick = () => {
+        if (quantitaInput.value > 0) {
+          quantitaInput.value--;
+          quantitaInput.dispatchEvent(new Event("change"));
+        }
+      };
+
+      const piu = document.createElement("button");
+      piu.textContent = "+";
+      piu.onclick = () => {
+        quantitaInput.value++;
+        quantitaInput.dispatchEvent(new Event("change"));
+      };
+
+      const controls = document.createElement("div");
+      controls.className = "quantity-control";
+      controls.appendChild(meno);
+      controls.appendChild(quantitaInput);
+      controls.appendChild(piu);
 
       riga.appendChild(nome);
       riga.appendChild(prezzo);
-      riga.appendChild(controllo);
+      riga.appendChild(controls);
 
       sezione.appendChild(riga);
     });
