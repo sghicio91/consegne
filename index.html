@@ -78,6 +78,15 @@
  <script>
  window.addEventListener("DOMContentLoaded", async () => {
   const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
+   // ✅ Precompila i campi se presenti in localStorage
+const datiCliente = JSON.parse(localStorage.getItem("datiCliente"));
+if (datiCliente) {
+  document.getElementById("nomeCliente").value = datiCliente.nome || "";
+  document.getElementById("telefonoCliente").value = datiCliente.telefono || "";
+  document.getElementById("address").value = datiCliente.indirizzo || "";
+  document.getElementById("note").value = datiCliente.note || "";
+}
+
   if (!ordineMod) return;
 
   // Precompila i campi
@@ -126,13 +135,13 @@
 }
 
 
-  function apriPaginaRiepilogo() {
-  const nome = document.getElementById("nomeCliente").value.trim();
-  const telefono = document.getElementById("telefonoCliente").value.trim();
-  const indirizzo = document.getElementById("address").value.trim();
-  const note = document.getElementById("note").value.trim();
+function apriPaginaRiepilogo() {
+  const nome = document.getElementById("nomeCliente")?.value.trim();
+  const telefono = document.getElementById("telefonoCliente")?.value.trim();
+  const indirizzo = document.getElementById("address")?.value.trim();
+  const note = document.getElementById("note")?.value.trim();
   const spedizione = window.prezzoSpedizione || 0;
-  const zona = window.zonaConsegna || "N/A";  // 👈 AGGIUNGI QUESTO
+  const zona = window.zonaConsegna || "N/A";
 
   const prodotti = Object.entries(carrello).map(([nome, dati]) => ({
     nome,
@@ -154,12 +163,20 @@
     noteCliente: note,
     prodotti,
     spedizione,
-    zona  // 👈 AGGIUNGI QUESTO
+    zona
   };
+  // ✅ Salva dati cliente per uso futuro
+localStorage.setItem("datiCliente", JSON.stringify({
+  nome: nome,
+  telefono: telefono,
+  indirizzo: indirizzo,
+  note: note
+}));
 
   localStorage.setItem("ordine", JSON.stringify(ordine));
   window.open("riepilogo.html", "_blank");
 }
+
 </script>
 
 </body>
