@@ -145,11 +145,14 @@ function apriPaginaRiepilogo() {
   const spedizione = window.prezzoSpedizione || 0;
   const zona = window.zonaConsegna || "N/A";
 
-  const prodotti = Object.entries(carrello).map(([nome, dati]) => ({
-    nome,
-    prezzo: dati.prezzo,
-    quantita: dati.quantita
+ const prodotti = Object.entries(carrello)
+  .filter(([_, dati]) => dati && dati.quantita > 0 && dati.quantita < 1000 && dati.prezzo < 10000)
+  .map(([nome, dati]) => ({
+    nome: nome.slice(0, 100),
+    prezzo: parseFloat(dati.prezzo),
+    quantita: parseInt(dati.quantita)
   }));
+
 
   if (!nome || !telefono || !indirizzo || prodotti.length === 0) {
     alert("Compila tutti i campi obbligatori e aggiungi almeno un prodotto.");
@@ -163,6 +166,16 @@ function apriPaginaRiepilogo() {
     indirizzo: indirizzo.slice(0, 100),
     note: note.slice(0, 200)
   };
+  try {
+  const jsonOrdine = JSON.stringify(ordine);
+  console.log("Dimensione ordine:", jsonOrdine.length);
+  localStorage.setItem("ordine", jsonOrdine);
+  window.open("riepilogo.html", "_blank");
+} catch (e) {
+  console.error("❌ Errore salvataggio ordine:", e);
+  alert("Errore nel salvataggio dell'ordine. Controlla i dati inseriti.");
+}
+
   localStorage.setItem("rubricaClienti", JSON.stringify(rubrica));
 
   // ✅ Ordine completo per la pagina riepilogo
