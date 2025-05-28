@@ -79,11 +79,11 @@
   <!-- Script per conferma ordine -->
 <script>
 window.addEventListener("DOMContentLoaded", async () => {
-  // Validazione input
+  // Validazione input telefono
   document.getElementById("telefonoCliente").addEventListener("input", function () {
     this.value = this.value.replace(/[^0-9]/g, "");
-
     const telefono = this.value;
+
     if (telefono.length >= 6) {
       const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || {};
       const cliente = rubrica[telefono];
@@ -97,30 +97,48 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // Validazione input nome
   document.getElementById("nomeCliente").addEventListener("input", function () {
     this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
   });
 
+  // Se non c'è un ordine da modificare, esce
   const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
   if (!ordineMod) return;
 
+  // Precompila i campi cliente
   document.getElementById("nomeCliente").value = ordineMod.nomeCliente || "";
   document.getElementById("telefonoCliente").value = ordineMod.telefonoCliente || "";
   document.getElementById("address").value = ordineMod.indirizzoCliente || "";
   document.getElementById("note").value = ordineMod.noteCliente || "";
 
-  ordineMod.prodotti.forEach(p => {
-    carrello[p.nome] = { prezzo: p.prezzo, quantita: p.quantita };
-  });
+  // Ricostruisci carrello
+  for (const p of ordineMod.prodotti) {
+    carrello[p.nome] = {
+      prezzo: p.prezzo,
+      quantita: p.quantita
+    };
+  }
 
+  // Ripristina spedizione e zona
   window.prezzoSpedizione = ordineMod.spedizione || 0;
   window.zonaConsegna = ordineMod.zona || "N/A";
 
+  // Prima carica il menu
   await apriMenu();
+
+  // Poi aggiorna gli input delle quantità visivamente
+  ordineMod.prodotti.forEach(p => {
+    const input = document.querySelector(`.quantity-control[data-prodotto="${p.nome}"] input`);
+    if (input) input.value = p.quantita;
+  });
+
   aggiornaRiepilogo();
 
+  // Pulisce lo stato di modifica
   localStorage.removeItem("ordineDaModificare");
 });
+
 
 function azzeraCampiCliente() {
   document.getElementById("nomeCliente").value = "";
