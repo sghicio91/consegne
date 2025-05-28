@@ -112,11 +112,11 @@ function apriMenu() {
   const container = document.getElementById("menuContainer");
   container.innerHTML = ''; // Pulisce il contenuto precedente
 
-  fetch("menu.json")
+  return fetch("menu.json") // ✅ aggiunto return
     .then(res => res.json())
     .then(menu => {
       container.style.display = "block";
-      let index = 1; // Conta continua per le pizzette
+      let index = 1;
 
       for (const categoria in menu) {
         const sezione = document.createElement("div");
@@ -187,6 +187,7 @@ function apriMenu() {
       console.error("Errore caricamento menu:", err);
     });
 }
+
 
 
 const carrello = {};
