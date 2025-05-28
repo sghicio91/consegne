@@ -74,6 +74,8 @@
   <!-- Script principale -->
   <script src="app.js"></script>
 
+  
+
   <!-- Script per conferma ordine -->
 <script>
 window.addEventListener("DOMContentLoaded", async () => {
@@ -81,16 +83,15 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("telefonoCliente").addEventListener("input", function () {
     this.value = this.value.replace(/[^0-9]/g, "");
 
-    // Quando ha almeno 3 cifre prova a cercare il cliente
-    if (this.value.length >= 3) {
-      const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || [];
-      const trovato = rubrica.find(c => c.telefono === this.value);
-
-      if (trovato && !document.getElementById("nomeCliente").value) {
-        if (confirm(`Cliente trovato: ${trovato.nome}. Vuoi caricare i suoi dati?`)) {
-          document.getElementById("nomeCliente").value = trovato.nome;
-          document.getElementById("address").value = trovato.indirizzo;
-          document.getElementById("note").value = trovato.note;
+    const telefono = this.value;
+    if (telefono.length >= 6) {
+      const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || {};
+      const cliente = rubrica[telefono];
+      if (cliente) {
+        if (confirm(`Cliente già registrato come "${cliente.nome}". Vuoi compilare automaticamente i dati?`)) {
+          document.getElementById("nomeCliente").value = cliente.nome || "";
+          document.getElementById("address").value = cliente.indirizzo || "";
+          document.getElementById("note").value = cliente.note || "";
         }
       }
     }
@@ -100,7 +101,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
   });
 
-  // Non precompilare all'avvio se non c'è modifica ordine
   const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
   if (!ordineMod) return;
 
@@ -131,6 +131,7 @@ function azzeraCampiCliente() {
 
 function azzeraTutto() {
   if (!confirm("Sei sicuro di voler azzerare tutto l'ordine?")) return;
+
   for (const nome in carrello) delete carrello[nome];
   document.querySelectorAll('.quantity-control input').forEach(input => input.value = 0);
   aggiornaRiepilogo();
@@ -155,16 +156,9 @@ function apriPaginaRiepilogo() {
     return;
   }
 
-  // 🔁 Salva o aggiorna cliente nella rubrica
-  const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || [];
-  const esistente = rubrica.find(c => c.telefono === telefono);
-  if (esistente) {
-    esistente.nome = nome;
-    esistente.indirizzo = indirizzo;
-    esistente.note = note;
-  } else {
-    rubrica.push({ nome, telefono, indirizzo, note });
-  }
+  // Salva il cliente in rubrica
+  const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || {};
+  rubrica[telefono] = { nome, indirizzo, note };
   localStorage.setItem("rubricaClienti", JSON.stringify(rubrica));
 
   const ordine = {
@@ -182,6 +176,7 @@ function apriPaginaRiepilogo() {
   localStorage.setItem("ordine", JSON.stringify(ordine));
   window.open("riepilogo.html", "_blank");
 }
+
 </script>
 
 
