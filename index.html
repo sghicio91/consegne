@@ -33,7 +33,7 @@
       
     </div>
     
-      <button onclick="azzeraTutto()" style="margin-top: 8px; background:#dc3545">🗑 Azzera tutto</button>
+     <button onclick="azzeraCampiCliente()" style="margin-top: 8px; background:#ffc107; color:#000">↺ Azzera campi cliente</button>
     
     <!-- ✅ Qui un solo risultato centrato -->
     <div class="ordine-feedback">
@@ -76,6 +76,12 @@
 
   <!-- Script per conferma ordine -->
  <script>
+   function azzeraCampiCliente() {
+  document.getElementById("nomeCliente").value = "";
+  document.getElementById("telefonoCliente").value = "";
+  document.getElementById("address").value = "";
+  document.getElementById("note").value = "";
+}
   function azzeraTutto() {
   if (!confirm("Sei sicuro di voler azzerare tutto l'ordine?")) return;
 
