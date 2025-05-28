@@ -75,65 +75,61 @@
   <script src="app.js"></script>
 
   <!-- Script per conferma ordine -->
- <script>
- window.addEventListener("DOMContentLoaded", async () => {
-  const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
-   // ✅ Precompila i campi se presenti in localStorage
-const datiCliente = JSON.parse(localStorage.getItem("datiCliente"));
-if (datiCliente) {
-  document.getElementById("nomeCliente").value = datiCliente.nome || "";
-  document.getElementById("telefonoCliente").value = datiCliente.telefono || "";
-  document.getElementById("address").value = datiCliente.indirizzo || "";
-  document.getElementById("note").value = datiCliente.note || "";
-}
+<script>
+window.addEventListener("DOMContentLoaded", async () => {
+  // Validazione input
+  document.getElementById("telefonoCliente").addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+  });
 
+  document.getElementById("nomeCliente").addEventListener("input", function () {
+    this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
+  });
+
+  // Precompila i campi da localStorage
+  const datiCliente = JSON.parse(localStorage.getItem("datiCliente"));
+  if (datiCliente) {
+    document.getElementById("nomeCliente").value = datiCliente.nome || "";
+    document.getElementById("telefonoCliente").value = datiCliente.telefono || "";
+    document.getElementById("address").value = datiCliente.indirizzo || "";
+    document.getElementById("note").value = datiCliente.note || "";
+  }
+
+  const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
   if (!ordineMod) return;
 
-  // Precompila i campi
   document.getElementById("nomeCliente").value = ordineMod.nomeCliente || "";
   document.getElementById("telefonoCliente").value = ordineMod.telefonoCliente || "";
   document.getElementById("address").value = ordineMod.indirizzoCliente || "";
   document.getElementById("note").value = ordineMod.noteCliente || "";
 
-  // Ricostruisci il carrello
   ordineMod.prodotti.forEach(p => {
     carrello[p.nome] = { prezzo: p.prezzo, quantita: p.quantita };
   });
 
-  // ✅ Ripristina la spedizione e zona salvate
   window.prezzoSpedizione = ordineMod.spedizione || 0;
   window.zonaConsegna = ordineMod.zona || "N/A";
 
-  // Carica menu e aggiorna riepilogo
   await apriMenu();
   aggiornaRiepilogo();
 
   localStorage.removeItem("ordineDaModificare");
 });
 
-
-
-
-   function azzeraCampiCliente() {
+function azzeraCampiCliente() {
   document.getElementById("nomeCliente").value = "";
   document.getElementById("telefonoCliente").value = "";
   document.getElementById("address").value = "";
-  document.getElementById("note").value = "";  // <- questo è corretto!
+  document.getElementById("note").value = "";
 }
-  function azzeraTutto() {
+
+function azzeraTutto() {
   if (!confirm("Sei sicuro di voler azzerare tutto l'ordine?")) return;
 
-  for (const nome in carrello) {
-    delete carrello[nome];
-  }
-
-  document.querySelectorAll('.quantity-control input').forEach(input => {
-    input.value = 0;
-  });
-
+  for (const nome in carrello) delete carrello[nome];
+  document.querySelectorAll('.quantity-control input').forEach(input => input.value = 0);
   aggiornaRiepilogo();
 }
-
 
 function apriPaginaRiepilogo() {
   const nome = document.getElementById("nomeCliente")?.value.trim();
@@ -154,6 +150,8 @@ function apriPaginaRiepilogo() {
     return;
   }
 
+  localStorage.setItem("datiCliente", JSON.stringify({ nome, telefono, indirizzo, note }));
+
   const ordine = {
     timestamp: Date.now(),
     nomeCliente: nome,
@@ -165,26 +163,11 @@ function apriPaginaRiepilogo() {
     spedizione,
     zona
   };
-  // ✅ Salva dati cliente per uso futuro
-localStorage.setItem("datiCliente", JSON.stringify({
-  nome: nome,
-  telefono: telefono,
-  indirizzo: indirizzo,
-  note: note
-}));
 
   localStorage.setItem("ordine", JSON.stringify(ordine));
   window.open("riepilogo.html", "_blank");
 }
-
 </script>
-  document.getElementById("telefonoCliente").addEventListener("input", function () {
-  this.value = this.value.replace(/[^0-9]/g, "");
-});
-
-document.getElementById("nomeCliente").addEventListener("input", function () {
-  this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
-});
 
 
 </body>
