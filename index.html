@@ -145,57 +145,53 @@ function apriPaginaRiepilogo() {
   const spedizione = window.prezzoSpedizione || 0;
   const zona = window.zonaConsegna || "N/A";
 
- const prodotti = Object.entries(carrello)
-  .filter(([_, dati]) => dati && dati.quantita > 0 && dati.quantita < 1000 && dati.prezzo < 10000)
-  .map(([nome, dati]) => ({
-    nome: nome.slice(0, 100),
-    prezzo: parseFloat(dati.prezzo),
-    quantita: parseInt(dati.quantita)
-  }));
-
+  const prodotti = Object.entries(carrello)
+    .filter(([_, dati]) => dati && dati.quantita > 0 && dati.quantita < 1000 && dati.prezzo < 10000)
+    .map(([nome, dati]) => ({
+      nome: nome.slice(0, 100),
+      prezzo: parseFloat(dati.prezzo),
+      quantita: parseInt(dati.quantita)
+    }));
 
   if (!nome || !telefono || !indirizzo || prodotti.length === 0) {
     alert("Compila tutti i campi obbligatori e aggiungi almeno un prodotto.");
     return;
   }
 
-  // ✅ SALVA I DATI MINIMI DEL CLIENTE nella rubrica
-  const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || {};
-  rubrica[telefono] = {
-    nome: nome.slice(0, 50),
-    indirizzo: indirizzo.slice(0, 100),
-    note: note.slice(0, 200)
-  };
-  try {
-  console.log("ORDINE COMPLETO:", ordine);
-  const jsonOrdine = JSON.stringify(ordine);
-  console.log("Dimensione ordine:", jsonOrdine.length);
-  localStorage.setItem("ordine", jsonOrdine);
-  window.open("riepilogo.html", "_blank");
-} catch (e) {
-  console.error("❌ Errore salvataggio ordine:", e);
-  alert("Errore nel salvataggio dell'ordine. Controlla i dati inseriti.");
-}
-
-  localStorage.setItem("rubricaClienti", JSON.stringify(rubrica));
-
-  // ✅ Ordine completo per la pagina riepilogo
+  // ✅ Crea l’oggetto ordine PRIMA del blocco try
   const ordine = {
     timestamp: Date.now(),
-    nomeCliente: nome,
-    telefonoCliente: telefono,
-    indirizzoCliente: indirizzo,
+    nomeCliente: nome.slice(0, 50),
+    telefonoCliente: telefono.slice(0, 20),
+    indirizzoCliente: indirizzo.slice(0, 100),
     pianoCliente: "",
-    noteCliente: note,
+    noteCliente: note.slice(0, 200),
     prodotti,
     spedizione,
     zona
   };
-  console.log("Ordine da salvare:", ordine);
 
-  localStorage.setItem("ordine", JSON.stringify(ordine));
-  window.open("riepilogo.html", "_blank");
+  // ✅ SALVA I DATI MINIMI DEL CLIENTE nella rubrica
+  const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || {};
+  rubrica[telefono] = {
+    nome: ordine.nomeCliente,
+    indirizzo: ordine.indirizzoCliente,
+    note: ordine.noteCliente
+  };
+  localStorage.setItem("rubricaClienti", JSON.stringify(rubrica));
+
+  try {
+    console.log("ORDINE COMPLETO:", ordine);
+    const jsonOrdine = JSON.stringify(ordine);
+    console.log("Dimensione ordine:", jsonOrdine.length);
+    localStorage.setItem("ordine", jsonOrdine);
+    window.open("riepilogo.html", "_blank");
+  } catch (e) {
+    console.error("❌ Errore salvataggio ordine:", e);
+    alert("Errore nel salvataggio dell'ordine. Controlla i dati inseriti.");
+  }
 }
+
 
 
 </script>
