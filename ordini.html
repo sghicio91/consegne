@@ -59,87 +59,85 @@
   <div id="ordiniContainer"></div>
 
   <script>
-  const filtro = document.getElementById("filtroData");
-  const container = document.getElementById("ordiniContainer");
+    const filtro = document.getElementById("filtroData");
+    const container = document.getElementById("ordiniContainer");
 
-  filtro.value = new Date().toISOString().slice(0, 10); // Imposta la data di oggi
-  filtro.addEventListener("change", mostraOrdini);
-  mostraOrdini();
-
-  function mostraOrdini() {
-    const dataSelezionata = filtro.value;
-    const tutti = JSON.parse(localStorage.getItem("ordini")) || [];
-
-    const ordiniFiltrati = tutti.filter(o => {
-      const dataOrdine = new Date(o.timestamp).toISOString().slice(0, 10);
-      return dataOrdine === dataSelezionata;
-    });
-
-    container.innerHTML = ordiniFiltrati.length === 0
-      ? '<p style="text-align:center">Nessun ordine trovato per questa data.</p>'
-      : ordiniFiltrati.map((ordine, index) => creaHTMLOrdine(ordine, index)).join("");
-  }
-
-  function creaHTMLOrdine(ordine, index) {
-    const prodottiHtml = ordine.prodotti.map(p => `
-      <div class="prodotto">
-        <span>${p.quantita} x ${p.nome}</span>
-        <span>${(p.prezzo * p.quantita).toFixed(2)} €</span>
-      </div>
-    `).join("");
-
-    const totale = ordine.prodotti.reduce((tot, p) => tot + p.prezzo * p.quantita, 0) + parseFloat(ordine.spedizione || 0);
-
-    return `
-      <div class="ordine">
-        <h2>Ordine N° ${index + 1}</h2>
-        <p><strong>Cliente:</strong> ${ordine.nomeCliente}</p>
-        <p><strong>Telefono:</strong> ${ordine.telefonoCliente}</p>
-        <p><strong>Indirizzo:</strong> ${ordine.indirizzoCliente}${ordine.pianoCliente ? " - " + ordine.pianoCliente : ""}</p>
-        <p><strong>Note:</strong> ${ordine.noteCliente || "-"}</p>
-        <div class="prodotti">${prodottiHtml}</div>
-        <p><strong>Totale:</strong> ${totale.toFixed(2)} €</p>
-        <div class="azioni">
-          <button onclick="ristampa(${index})">🖶 Stampa</button>
-          <button onclick="modifica(${index})">✏️ Modifica</button>
-          <button onclick="cancella(${index})" style="background:#dc3545">🗑 Elimina</button>
-        </div>
-      </div>
-    `;
-  }
-
-  function ristampa(index) {
-    const ordini = JSON.parse(localStorage.getItem("ordini")) || [];
-    const ordine = filtraPerData()[index];
-    localStorage.setItem("ordine", JSON.stringify(ordine));
-    window.open("riepilogo.html", "_blank");
-  }
-
-  function modifica(index) {
-    const ordine = filtraPerData()[index];
-    localStorage.setItem("ordineDaModificare", JSON.stringify(ordine));
-    window.location.href = "index.html";
-  }
-
-  function cancella(index) {
-    if (!confirm("Sei sicuro di voler eliminare questo ordine?")) return;
-
-    const tutti = JSON.parse(localStorage.getItem("ordini")) || [];
-    const daEliminare = filtraPerData()[index];
-    const aggiornato = tutti.filter(o => o.timestamp !== daEliminare.timestamp);
-    localStorage.setItem("ordini", JSON.stringify(aggiornato));
+    filtro.value = new Date().toISOString().slice(0, 10);
+    filtro.addEventListener("change", mostraOrdini);
     mostraOrdini();
-  }
 
-  function filtraPerData() {
-    const dataSelezionata = filtro.value;
-    const tutti = JSON.parse(localStorage.getItem("ordini")) || [];
-    return tutti.filter(o => {
-      const dataOrdine = new Date(o.timestamp).toISOString().slice(0, 10);
-      return dataOrdine === dataSelezionata;
-    });
-  }
-</script>
+    function mostraOrdini() {
+      const dataSelezionata = filtro.value;
+      const tutti = JSON.parse(localStorage.getItem("ordini")) || [];
 
+      const ordiniFiltrati = tutti.filter(o => {
+        const dataOrdine = new Date(o.timestamp).toISOString().slice(0, 10);
+        return dataOrdine === dataSelezionata;
+      });
+
+      container.innerHTML = ordiniFiltrati.length === 0
+        ? '<p style="text-align:center">Nessun ordine trovato per questa data.</p>'
+        : ordiniFiltrati.map((ordine, index) => creaHTMLOrdine(ordine, index)).join("");
+    }
+
+    function creaHTMLOrdine(ordine, index) {
+      const prodottiHtml = ordine.prodotti.map(p => `
+        <div class="prodotto">
+          <span>${p.quantita} x ${p.nome}</span>
+          <span>${(p.prezzo * p.quantita).toFixed(2)} €</span>
+        </div>
+      `).join("");
+
+      const totale = ordine.prodotti.reduce((tot, p) => tot + p.prezzo * p.quantita, 0) + parseFloat(ordine.spedizione || 0);
+
+      return `
+        <div class="ordine">
+          <h2>Ordine N° ${index + 1}</h2>
+          <p><strong>Cliente:</strong> ${ordine.nomeCliente}</p>
+          <p><strong>Telefono:</strong> ${ordine.telefonoCliente}</p>
+          <p><strong>Indirizzo:</strong> ${ordine.indirizzoCliente}${ordine.pianoCliente ? " - " + ordine.pianoCliente : ""}</p>
+          <p><strong>Note:</strong> ${ordine.noteCliente || "-"}</p>
+          <div class="prodotti">${prodottiHtml}</div>
+          <p><strong>Totale:</strong> ${totale.toFixed(2)} €</p>
+          <div class="azioni">
+            <button onclick="ristampa(${index})">🖶 Stampa</button>
+            <button onclick="modifica(${index})">✏️ Modifica</button>
+            <button onclick="cancella(${index})" style="background:#dc3545">🗑 Elimina</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function filtraPerData() {
+      const dataSelezionata = filtro.value;
+      const tutti = JSON.parse(localStorage.getItem("ordini")) || [];
+      return tutti.filter(o => {
+        const dataOrdine = new Date(o.timestamp).toISOString().slice(0, 10);
+        return dataOrdine === dataSelezionata;
+      });
+    }
+
+    function ristampa(index) {
+      const ordini = filtraPerData();
+      localStorage.setItem("ordine", JSON.stringify(ordini[index]));
+      window.open("riepilogo.html", "_blank");
+    }
+
+    function modifica(index) {
+      const ordini = filtraPerData();
+      localStorage.setItem("ordineDaModificare", JSON.stringify(ordini[index]));
+      window.location.href = "index.html";
+    }
+
+    function cancella(index) {
+      if (!confirm("Sei sicuro di voler eliminare questo ordine?")) return;
+
+      const tutti = JSON.parse(localStorage.getItem("ordini")) || [];
+      const daEliminare = filtraPerData()[index];
+      const aggiornato = tutti.filter(o => o.timestamp !== daEliminare.timestamp);
+      localStorage.setItem("ordini", JSON.stringify(aggiornato));
+      mostraOrdini();
+    }
+  </script>
 </body>
 </html>
