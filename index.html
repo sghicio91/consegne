@@ -76,7 +76,7 @@
 
   <!-- Script per conferma ordine -->
  <script>
-  window.addEventListener("DOMContentLoaded", async () => {
+ window.addEventListener("DOMContentLoaded", async () => {
   const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
   if (!ordineMod) return;
 
@@ -91,12 +91,17 @@
     carrello[p.nome] = { prezzo: p.prezzo, quantita: p.quantita };
   });
 
-  // ✅ Aspetta che il menu sia caricato prima di aggiornare il riepilogo
+  // ✅ Ripristina la spedizione e zona salvate
+  window.prezzoSpedizione = ordineMod.spedizione || 0;
+  window.zonaConsegna = ordineMod.zona || "N/A";
+
+  // Carica menu e aggiorna riepilogo
   await apriMenu();
   aggiornaRiepilogo();
 
   localStorage.removeItem("ordineDaModificare");
 });
+
 
 
 
