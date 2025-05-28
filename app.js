@@ -108,85 +108,67 @@ function searchAddress() {
       });
     });
 }
-function apriMenu() {
+async function apriMenu() {
+  const response = await fetch("menu.json");
+  const menu = await response.json();
   const container = document.getElementById("menuContainer");
-  container.innerHTML = ''; // Pulisce il contenuto precedente
+  container.innerHTML = "";
 
-  return fetch("menu.json") // ✅ aggiunto return
-    .then(res => res.json())
-    .then(menu => {
-      container.style.display = "block";
-      let index = 1;
+  for (const categoria in menu) {
+    const sezione = document.createElement("div");
+    sezione.classList.add("menu-section");
 
-      for (const categoria in menu) {
-        const sezione = document.createElement("div");
-        sezione.className = "menu-section";
+    const titolo = document.createElement("h2");
+    titolo.textContent = categoria.replaceAll("_", " ").toUpperCase();
+    sezione.appendChild(titolo);
 
-        const titolo = document.createElement("h2");
-        titolo.textContent = categoria.replace(/_/g, " ").toUpperCase();
-        sezione.appendChild(titolo);
+    menu[categoria].forEach(prodotto => {
+      const riga = document.createElement("div");
+      riga.classList.add("menu-item");
 
-        menu[categoria].forEach(item => {
-          const blocco = document.createElement("div");
-          blocco.className = "menu-item-block";
+      const nome = document.createElement("span");
+      nome.textContent = prodotto.nome;
 
-          const nome = document.createElement("strong");
+      const prezzo = document.createElement("span");
+      prezzo.textContent = `${prodotto.prezzo.toFixed(2)} €`;
 
-          if (categoria.toLowerCase().includes("pizzette_clasicas") || categoria.toLowerCase().includes("pizzette_especiales")) {
-            nome.textContent = `${index}. ${item.nome}`;
-            index++;
-          } else {
-            nome.textContent = item.nome;
-          }
+      const controllo = document.createElement("div");
+      controllo.classList.add("quantity-control");
+      controllo.setAttribute("data-prodotto", prodotto.nome);
 
-          const prezzo = document.createElement("span");
-          prezzo.textContent = `${item.prezzo} €`;
+      const input = document.createElement("input");
+      input.type = "number";
+      input.min = "0";
+      input.value = carrello[prodotto.nome]?.quantita || 0;
 
-          const quantitaWrapper = document.createElement("div");
-          quantitaWrapper.className = "quantity-control";
+      input.addEventListener("input", () => {
+        const quantita = parseInt(input.value);
+        if (quantita > 0) {
+          carrello[prodotto.nome] = {
+            prezzo: prodotto.prezzo,
+            quantita
+          };
+        } else {
+          delete carrello[prodotto.nome];
+        }
+        aggiornaRiepilogo();
+      });
 
-          const menoBtn = document.createElement("button");
-          menoBtn.textContent = "−";
+      controllo.appendChild(input);
 
-          const inputQuantita = document.createElement("input");
-          inputQuantita.type = "number";
-          inputQuantita.value = 0;
-          inputQuantita.min = 0;
-          inputQuantita.readOnly = true;
+      riga.appendChild(nome);
+      riga.appendChild(prezzo);
+      riga.appendChild(controllo);
 
-          const piuBtn = document.createElement("button");
-          piuBtn.textContent = "+";
-
-          quantitaWrapper.appendChild(menoBtn);
-          quantitaWrapper.appendChild(inputQuantita);
-          quantitaWrapper.appendChild(piuBtn);
-
-          blocco.appendChild(nome);
-          blocco.appendChild(prezzo);
-          blocco.appendChild(quantitaWrapper);
-
-          sezione.appendChild(blocco);
-
-          piuBtn.addEventListener("click", () => {
-            inputQuantita.value = parseInt(inputQuantita.value) + 1;
-            aggiornaCarrello(item.nome, item.prezzo, parseInt(inputQuantita.value));
-          });
-
-          menoBtn.addEventListener("click", () => {
-            const nuovaQuantita = Math.max(0, parseInt(inputQuantita.value) - 1);
-            inputQuantita.value = nuovaQuantita;
-            aggiornaCarrello(item.nome, item.prezzo, nuovaQuantita);
-          });
-        });
-
-        container.appendChild(sezione);
-      }
-    })
-    .catch(err => {
-      container.innerHTML = "<p>⚠️ Errore nel caricamento del menu.</p>";
-      console.error("Errore caricamento menu:", err);
+      sezione.appendChild(riga);
     });
+
+    container.appendChild(sezione);
+  }
+
+  container.style.display = "block";
 }
+
 
 
 
