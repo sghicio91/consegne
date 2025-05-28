@@ -24,8 +24,8 @@
 
     <!-- ✅ Campi per Nome, Telefono e Indirizzo -->
     <div class="form-clienti">
-      <input type="text" id="nomeCliente" placeholder="Nome">
       <input type="text" id="telefonoCliente" placeholder="Telefono">
+      <input type="text" id="nomeCliente" placeholder="Nome">
       <input type="text" id="address" placeholder="Inserisci un indirizzo">
       <textarea id="note" placeholder="Note (piano, scala, campanello...)" rows="1"
         oninput="this.style.height='auto'; this.style.height=this.scrollHeight + 'px';"></textarea>
@@ -178,6 +178,14 @@ localStorage.setItem("datiCliente", JSON.stringify({
 }
 
 </script>
+  document.getElementById("telefonoCliente").addEventListener("input", function () {
+  this.value = this.value.replace(/[^0-9]/g, "");
+});
+
+document.getElementById("nomeCliente").addEventListener("input", function () {
+  this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
+});
+
 
 </body>
 </html>
