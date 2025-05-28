@@ -80,21 +80,27 @@ window.addEventListener("DOMContentLoaded", async () => {
   // Validazione input
   document.getElementById("telefonoCliente").addEventListener("input", function () {
     this.value = this.value.replace(/[^0-9]/g, "");
+
+    // Quando ha almeno 3 cifre prova a cercare il cliente
+    if (this.value.length >= 3) {
+      const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || [];
+      const trovato = rubrica.find(c => c.telefono === this.value);
+
+      if (trovato && !document.getElementById("nomeCliente").value) {
+        if (confirm(`Cliente trovato: ${trovato.nome}. Vuoi caricare i suoi dati?`)) {
+          document.getElementById("nomeCliente").value = trovato.nome;
+          document.getElementById("address").value = trovato.indirizzo;
+          document.getElementById("note").value = trovato.note;
+        }
+      }
+    }
   });
 
   document.getElementById("nomeCliente").addEventListener("input", function () {
     this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
   });
 
-  // Precompila i campi da localStorage
-  const datiCliente = JSON.parse(localStorage.getItem("datiCliente"));
-  if (datiCliente) {
-    document.getElementById("nomeCliente").value = datiCliente.nome || "";
-    document.getElementById("telefonoCliente").value = datiCliente.telefono || "";
-    document.getElementById("address").value = datiCliente.indirizzo || "";
-    document.getElementById("note").value = datiCliente.note || "";
-  }
-
+  // Non precompilare all'avvio se non c'è modifica ordine
   const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
   if (!ordineMod) return;
 
@@ -125,7 +131,6 @@ function azzeraCampiCliente() {
 
 function azzeraTutto() {
   if (!confirm("Sei sicuro di voler azzerare tutto l'ordine?")) return;
-
   for (const nome in carrello) delete carrello[nome];
   document.querySelectorAll('.quantity-control input').forEach(input => input.value = 0);
   aggiornaRiepilogo();
@@ -150,7 +155,17 @@ function apriPaginaRiepilogo() {
     return;
   }
 
-  localStorage.setItem("datiCliente", JSON.stringify({ nome, telefono, indirizzo, note }));
+  // 🔁 Salva o aggiorna cliente nella rubrica
+  const rubrica = JSON.parse(localStorage.getItem("rubricaClienti")) || [];
+  const esistente = rubrica.find(c => c.telefono === telefono);
+  if (esistente) {
+    esistente.nome = nome;
+    esistente.indirizzo = indirizzo;
+    esistente.note = note;
+  } else {
+    rubrica.push({ nome, telefono, indirizzo, note });
+  }
+  localStorage.setItem("rubricaClienti", JSON.stringify(rubrica));
 
   const ordine = {
     timestamp: Date.now(),
@@ -168,6 +183,7 @@ function apriPaginaRiepilogo() {
   window.open("riepilogo.html", "_blank");
 }
 </script>
+
 
 
 </body>
