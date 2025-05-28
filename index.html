@@ -76,6 +76,27 @@
 
   <!-- Script per conferma ordine -->
  <script>
+   window.addEventListener("DOMContentLoaded", () => {
+  const ordineMod = JSON.parse(localStorage.getItem("ordineDaModificare"));
+  if (!ordineMod) return;
+
+  // Precompila i campi
+  document.getElementById("nomeCliente").value = ordineMod.nomeCliente || "";
+  document.getElementById("telefonoCliente").value = ordineMod.telefonoCliente || "";
+  document.getElementById("address").value = ordineMod.indirizzoCliente || "";
+  document.getElementById("note").value = ordineMod.noteCliente || "";
+
+  // Ricostruisci il carrello
+  ordineMod.prodotti.forEach(p => {
+    carrello[p.nome] = { prezzo: p.prezzo, quantita: p.quantita };
+  });
+
+  // Forza l'apertura del menu e del riepilogo
+  apriMenu();
+  setTimeout(() => aggiornaRiepilogo(), 100); // Dopo caricamento
+  localStorage.removeItem("ordineDaModificare");
+});
+
    function azzeraCampiCliente() {
   document.getElementById("nomeCliente").value = "";
   document.getElementById("telefonoCliente").value = "";
