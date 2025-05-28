@@ -167,6 +167,7 @@ function apriPaginaRiepilogo() {
     note: note.slice(0, 200)
   };
   try {
+  console.log("ORDINE COMPLETO:", ordine);
   const jsonOrdine = JSON.stringify(ordine);
   console.log("Dimensione ordine:", jsonOrdine.length);
   localStorage.setItem("ordine", jsonOrdine);
